@@ -1,18 +1,21 @@
-/** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === 'production';
-const repo = 'vaishvi-portfolio'; // <- your repo name
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
 
-export default {
-  output: 'export',
-  basePath: isProd ? `/${repo}` : '',
-  assetPrefix: isProd ? `/${repo}/` : '',
-  images: { unoptimized: true },
-  eslint: {
-    // Ignore ESLint errors during production builds
-    ignoreDuringBuilds: true,
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+const eslintConfig = [
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "warn", // Change from "error" to "warn"
+    },
   },
-  typescript: {
-    // Ignore TypeScript errors during production builds (optional)
-    ignoreBuildErrors: true,
-  },
-};
+];
+
+export default eslintConfig;
