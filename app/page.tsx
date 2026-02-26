@@ -15,28 +15,40 @@ import { Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
 
 const PROJECTS = [
   {
-    title: "MD/SA Analytics Platform",
+    title: "MD/SA Analytics Platform — Frontend Redesign & APIs",
     org: "Fluor Corporation",
     year: "2024",
+    description:
+      "Led rapid prototyping and shipped production modules for an enterprise analytics platform. Built RESTful APIs with Spring Boot and orchestrated data flows; delivered a full front‑end refresh that boosted engagement.",
     skills: ["Spring Boot", "REST APIs", "Frontend", "Prototyping"],
+    link: { label: "Notes", href: "#" },
   },
   {
     title: "International Supplier Base: Market Entry Analysis",
     org: "Fluor Corporation",
     year: "2025",
+    description:
+      "Interviewed stakeholders across functions, modeled scenarios, and pinpointed optimization opportunities for international market entry in energy/nuclear supply chains.",
     skills: ["Data Analysis", "Financial Modeling", "Stakeholder Research"],
+    link: { label: "Overview", href: "#" },
   },
   {
     title: "Biomedical Data Infrastructure for NIH Repositories",
     org: "Dept. of Biomedical Informatics (SBU)",
     year: "2024",
+    description:
+      "Built APIs and web apps that improved access to genomic + EHR datasets under Prof. Richard Moffitt; delivered visualization tooling for researchers.",
     skills: ["APIs", "Web Apps", "Data Viz"],
+    link: { label: "Abstract", href: "#" },
   },
   {
-    title: "Regression & Pipelines",
+    title: "Regression & Pipelines — R/Python",
     org: "Personal Research",
-    year: "2023\u201324",
+    year: "2023–24",
+    description:
+      "End‑to‑end analysis: imputation, linear models, feature significance across 24 variables; built reusable ETL/pipeline utilities.",
     skills: ["R", "Python", "ETL", "Modeling"],
+    link: { label: "Repo", href: "#" },
   },
 ];
 
@@ -55,9 +67,9 @@ const LINKS = {
 };
 
 const SKILLS_DATA = [
-  { label: "Languages", value: "Python, Java, R, SQL, TypeScript, HTML/CSS" },
-  { label: "Frameworks", value: "Spring Boot, React, Next.js, RESTful APIs" },
-  { label: "Tools", value: "Git, VS Code, Bash/Zsh, ETL Pipelines, Data Viz" },
+  { label: "Languages", value: "Python, Java, R, SQL, TypeScript/JS, HTML/CSS" },
+  { label: "Frameworks", value: "Spring Boot, React, RESTful APIs; some Angular" },
+  { label: "Data", value: "ETL/pipelines, databases, viz; Git, VS Code, Bash/Zsh" },
 ];
 
 /* ─────────────── HELPERS ─────────────── */
@@ -161,7 +173,9 @@ function Nav() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
-        <span className="text-lg font-extrabold tracking-tight">VJ</span>
+        <a href="#top" className="text-lg font-extrabold tracking-tight">
+          Vaishvi Jariwala
+        </a>
         <span className="hidden text-sm font-medium tracking-wide text-muted sm:block">
           Designer &middot; Engineer
         </span>
@@ -194,11 +208,12 @@ function Hero() {
   const y = useTransform(scrollYProgress, [0, 0.5], [0, -80]);
 
   const heroText =
-    "Vaishvi is a design-savvy engineer who builds systems and stories that make data, products, and brands easier to understand.";
+    "Vaishvi is a design‑savvy engineer in NYC. She builds systems and stories that make data, products, and brands easier to understand. Her sweet spot is prototype‑to‑production — rapid exploration that turns into real, shipped experiences.";
   const words = heroText.split(" ");
 
   return (
     <motion.header
+      id="top"
       ref={ref}
       style={{ opacity, y }}
       className="relative mx-auto max-w-7xl px-6 pt-32 pb-16 lg:px-10 lg:pt-40 lg:pb-20"
@@ -224,23 +239,8 @@ function Hero() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.2 }}
-        className="mt-8 flex flex-wrap items-center gap-4"
-      >
-        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-4 py-2 text-sm font-medium backdrop-blur-sm">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
-          </span>
-          Available for roles in NYC
-        </span>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 1.4 }}
-        className="mt-6 flex flex-wrap items-center gap-4"
+        className="mt-8 flex flex-wrap items-center gap-4"
       >
         <a
           href="#work"
@@ -255,7 +255,7 @@ function Hero() {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
         >
-          <Github className="h-4 w-4" /> GitHub
+          <Github className="h-4 w-4" /> Github
         </a>
         <a
           href={LINKS.linkedin}
@@ -287,13 +287,13 @@ function Ticker() {
         <div className="animate-marquee flex w-max items-center gap-8 whitespace-nowrap">
           {items.map((name, i) => (
             <span key={i} className="flex items-center gap-4 text-sm font-medium text-muted">
-              <span className="text-accent">{"\u2666"}</span>
+              <span className="text-accent">•</span>
               {name}
             </span>
           ))}
           {items.map((name, i) => (
             <span key={`dup-${i}`} className="flex items-center gap-4 text-sm font-medium text-muted">
-              <span className="text-accent">{"\u2666"}</span>
+              <span className="text-accent">•</span>
               {name}
             </span>
           ))}
@@ -314,7 +314,7 @@ function ProjectCard({
 }) {
   return (
     <FadeUp delay={index * 0.1}>
-      <div className="group relative rounded-2xl border border-border bg-background p-8 transition-all duration-350 ease-out hover:border-transparent hover:bg-dark-card">
+      <div className="group relative flex flex-col rounded-2xl border border-border bg-background p-8 transition-all duration-350 ease-out hover:border-transparent hover:bg-dark-card">
         <div className="flex items-start justify-between">
           <div>
             <h3 className="text-xl font-bold leading-snug tracking-tight transition-colors duration-350 group-hover:text-accent">
@@ -328,6 +328,11 @@ function ProjectCard({
             <ArrowUpRight className="h-4 w-4 transition-transform duration-350 group-hover:rotate-45 group-hover:text-accent" />
           </div>
         </div>
+
+        <p className="mt-4 text-sm leading-relaxed text-muted transition-colors duration-350 group-hover:text-background/60">
+          {project.description}
+        </p>
+
         <div className="mt-6 flex flex-wrap gap-2">
           {project.skills.map((s) => (
             <span
@@ -337,6 +342,17 @@ function ProjectCard({
               {s}
             </span>
           ))}
+        </div>
+
+        <div className="mt-6">
+          <a
+            href={project.link.href}
+            className="inline-flex items-center gap-1 text-sm font-semibold text-accent underline underline-offset-4 transition-opacity hover:opacity-70 group-hover:text-accent"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {project.link.label}
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </a>
         </div>
       </div>
     </FadeUp>
@@ -349,9 +365,12 @@ function SelectedWork() {
   return (
     <section id="work" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
       <FadeUp>
-        <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-          Selected Work
-        </h2>
+        <div className="flex items-baseline gap-4">
+          <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
+            Selected Work
+          </h2>
+          <span className="text-sm font-medium text-muted">shipped + in progress</span>
+        </div>
       </FadeUp>
       <div className="mt-12 grid gap-6 md:grid-cols-2">
         {PROJECTS.map((p, i) => (
@@ -369,12 +388,17 @@ function Experiments() {
     <section id="play" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
       <FadeUp>
         <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-          Experiments
+          Play
         </h2>
       </FadeUp>
+      <FadeUp delay={0.1}>
+        <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
+          Little prototypes, visual riffs, and throwaway ideas that sometimes grow up into real projects. Reach out if something sparks.
+        </p>
+      </FadeUp>
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3].map((n) => (
-          <FadeUp key={n} delay={n * 0.1}>
+        {Array.from({ length: 6 }).map((_, n) => (
+          <FadeUp key={n} delay={n * 0.08}>
             <motion.div
               whileHover={{
                 rotate: [0, -1, 1, -0.5, 0],
@@ -383,7 +407,7 @@ function Experiments() {
               className="flex aspect-[4/3] items-center justify-center rounded-2xl border-2 border-dashed border-border"
             >
               <span className="text-sm font-medium text-muted">
-                {"Coming soon \u2726"}
+                Drop an experiment here
               </span>
             </motion.div>
           </FadeUp>
@@ -403,15 +427,12 @@ function Info() {
         <div className="lg:col-span-3">
           <FadeUp>
             <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-              About
+              Info
             </h2>
           </FadeUp>
           <FadeUp delay={0.1}>
             <p className="mt-6 text-lg leading-relaxed text-muted">
-              Graduate of Stony Brook University (Technological Systems
-              Management, CS + Applied Math & Stats). I enjoy fast iterations,
-              clean interfaces, and the boring-but-essential parts of
-              engineering.
+              I&rsquo;m a senior at Stony Brook (Technological Systems Mgmt, CS + Applied Stats minor) who likes turning messy problems into clear products. I enjoy fast iterations, clean interfaces, and the boring-but-essential parts of engineering: naming, docs, and tests.
             </p>
           </FadeUp>
 
@@ -430,6 +451,33 @@ function Info() {
                   </span>
                 </div>
               ))}
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.25}>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <a
+                href={LINKS.email}
+                className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
+              >
+                <Mail className="h-4 w-4" /> Email me
+              </a>
+              <a
+                href={LINKS.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
+              >
+                <Github className="h-4 w-4" /> GitHub
+              </a>
+              <a
+                href={LINKS.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
+              >
+                <Linkedin className="h-4 w-4" /> LinkedIn
+              </a>
             </div>
           </FadeUp>
         </div>
@@ -463,9 +511,9 @@ function Info() {
               </h3>
               <ul className="mt-4 space-y-3">
                 {[
-                  "Full-time roles in NYC",
+                  "Fall collaborations (NYC)",
                   "Mentors in ML/product design",
-                  "Collaborators on interesting projects",
+                  "Opportunities post‑grad (Jan '26)",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-muted">
                     <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
@@ -489,10 +537,14 @@ function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
         <FadeUp>
           <h2 className="text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[1.05] tracking-tight text-balance">
-            {"Let\u2019s build something"}
-            <br />
-            <span className="text-accent">worth remembering.</span>
+            Thank you for your curiosity.
           </h2>
+        </FadeUp>
+
+        <FadeUp delay={0.1}>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-background/70">
+            If something here resonated, say hi. I love talking about thoughtful software, calm interfaces, and building with intention.
+          </p>
         </FadeUp>
 
         <FadeUp delay={0.15}>
@@ -501,7 +553,7 @@ function Footer() {
               href={LINKS.email}
               className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition-transform duration-200 hover:scale-105"
             >
-              <Mail className="h-4 w-4" /> Get in touch
+              <Mail className="h-4 w-4" /> Let&rsquo;s chat
             </a>
             <a
               href={LINKS.github}
@@ -526,12 +578,12 @@ function Footer() {
           <div className="mt-20 grid gap-10 border-t border-background/10 pt-12 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
-                Location
+                Visit
               </h4>
               <p className="mt-3 text-sm text-background/70">
-                New York City
+                NYC
                 <br />
-                Often in Houston
+                often in Houston
               </p>
             </div>
             <div>
@@ -553,19 +605,17 @@ function Footer() {
             </div>
             <div>
               <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
-                Education
+                Learn
               </h4>
               <p className="mt-3 text-sm text-background/70">
-                BS, Technological Systems Management
-                <br />
-                CS + Applied Math & Stats
+                BS, Tech Systems Mgmt + CS &amp; Applied Maths + Stats
                 <br />
                 Stony Brook University
               </p>
             </div>
             <div>
               <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
-                Contact
+                Let&rsquo;s talk
               </h4>
               <ul className="mt-3 space-y-2 text-sm">
                 <li>
