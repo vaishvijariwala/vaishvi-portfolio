@@ -1,0 +1,21 @@
+/**
+@auth vai
+@date 10/21/25
+**/
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    font-family: 'Courier';
+    color: #fff;
+    font-size: 9px;
+    line-height: 10px;
+    letter-spacing: 1px;
+
+}
+
+canvas {
+    display: block;
+}
+

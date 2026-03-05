@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- @auth vai @date 10/21/25 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ascii stimulation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { background: #000; width: 100%; height: 100%; }
+
+        #start-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            z-index: 100;
+        }
+        #start-screen pre {
+            color: #fff;
+            font-family: Courier, monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            text-align: center;
+        }
+        #start-screen p {
+            color: #aaa;
+            font-family: Courier, monospace;
+            font-size: 13px;
+            letter-spacing: 3px;
+        }
+        #startBtn {
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            font-family: Courier, monospace;
+            font-size: 13px;
+            letter-spacing: 3px;
+            padding: 10px 28px;
+            cursor: pointer;
+        }
+        #startBtn:hover { background: #fff; color: #000; }
+        #credit {
+            color: #333;
+            font-family: Courier, monospace;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+        #ascii-output {
+            display: none;
+            font-family: Courier, monospace;
+            color: #fff;
+            background: #000;
+            font-size: 11px;
+            line-height: 13px;
+            letter-spacing: 2px;
+            padding: 20px;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <div id="start-screen">
+        <pre>  /\_/\  
+ ( o.o ) 
+  > ^ <  
+ /|   |\ </pre>
+        <p>meow</p>
+        <button id="startBtn">click to start</button>
+        <span id="credit">special thanks: the coding train</span>
+    </div>
+
+    <div id="ascii-output"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <script src="sketch.js"></script>
+</body>
+</html>

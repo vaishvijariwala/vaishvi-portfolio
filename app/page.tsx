@@ -9,46 +9,91 @@ import {
   useInView,
   AnimatePresence,
 } from "framer-motion";
-import { Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowUpRight, ExternalLink } from "lucide-react";
 
 /* ─────────────── DATA ─────────────── */
 
 const PROJECTS = [
   {
+    title: "WineWright — No-Code AI Agent Interface",
+    org: "CalArts UI/UX Design Specialization",
+    year: "2024–25",
+    description:
+      "End-to-end design of a mobile app that turns natural language into wine discovery. Includes user research, journey mapping, content mapping, interaction design, and a full prototype — built for non-technical users navigating a complex domain.",
+    skills: ["UX Research", "Interaction Design", "Prototyping", "Design Systems"],
+    link: { label: "Case Study", href: "#" },
+    featured: true,
+  },
+  {
+    title: "AI-Agent Job Fit Generator",
+    org: "Dust MCP Server",
+    year: "2025",
+    description:
+      "Built an end-to-end agentic pipeline that ingests profile data, runs multi-step LLM reasoning to evaluate role fit, and generates personalized outputs in under 2 seconds. Replaced 30–45 min of manual analysis per role.",
+    skills: ["LLM Pipelines", "Prompt Engineering", "Agentic Architecture", "Dust MCP"],
+    link: { label: "Overview", href: "#" },
+    featured: true,
+  },
+  {
     title: "MD/SA Analytics Platform — Frontend Redesign & APIs",
     org: "Fluor Corporation",
     year: "2024",
     description:
-      "Led rapid prototyping and shipped production modules for an enterprise analytics platform. Built RESTful APIs with Spring Boot and orchestrated data flows; delivered a full front‑end refresh that boosted engagement.",
-    skills: ["Spring Boot", "REST APIs", "Frontend", "Prototyping"],
+      "Shipped production modules for an enterprise analytics platform. Built RESTful APIs with Spring Boot, orchestrated data flows, and delivered a full front-end refresh that reduced reporting latency by 30%.",
+    skills: ["Spring Boot", "REST APIs", "TypeScript", "React"],
     link: { label: "Notes", href: "#" },
+    featured: false,
   },
   {
     title: "International Supplier Base: Market Entry Analysis",
     org: "Fluor Corporation",
     year: "2025",
     description:
-      "Interviewed stakeholders across functions, modeled scenarios, and pinpointed optimization opportunities for international market entry in energy/nuclear supply chains.",
-    skills: ["Data Analysis", "Financial Modeling", "Stakeholder Research"],
+      "Ran 20+ executive stakeholder interviews, modeled market entry scenarios, and produced Board-level white papers that directly influenced a multimillion-dollar investment decision.",
+    skills: ["Financial Modeling", "Stakeholder Research", "Data Analysis"],
     link: { label: "Overview", href: "#" },
+    featured: false,
+  },
+  {
+    title: "AI Dependency & Human Agency — Research",
+    org: "Independent Research",
+    year: "2024–25",
+    description:
+      "Mixed-methods research on how AI tools affect decision-making confidence and personal agency. Synthesized peer-reviewed literature, developed a self-ethnography framework, and designed surveys targeting graduate students and early-career professionals.",
+    skills: ["UX Research", "Mixed Methods", "Literature Synthesis", "Survey Design"],
+    link: { label: "Read More", href: "#" },
+    featured: false,
   },
   {
     title: "Biomedical Data Infrastructure for NIH Repositories",
-    org: "Dept. of Biomedical Informatics (SBU)",
+    org: "Dept. of Biomedical Informatics, SBU",
     year: "2024",
     description:
-      "Built APIs and web apps that improved access to genomic + EHR datasets under Prof. Richard Moffitt; delivered visualization tooling for researchers.",
-    skills: ["APIs", "Web Apps", "Data Viz"],
+      "Built APIs and web apps that improved access to genomic and EHR datasets under Prof. Richard Moffitt. Delivered interactive visualization tooling for research teams.",
+    skills: ["APIs", "Web Apps", "Data Viz", "Python"],
     link: { label: "Abstract", href: "#" },
+    featured: false,
+  },
+];
+
+const EXPERIMENTS = [
+  {
+    title: "ASCII Webcam",
+    description: "Real-time video converted to ASCII art in the browser.",
+    tag: "Creative Code",
+    href: "#",
   },
   {
-    title: "Regression & Pipelines — R/Python",
-    org: "Personal Research",
-    year: "2023–24",
-    description:
-      "End‑to‑end analysis: imputation, linear models, feature significance across 24 variables; built reusable ETL/pipeline utilities.",
-    skills: ["R", "Python", "ETL", "Modeling"],
-    link: { label: "Repo", href: "#" },
+    title: "Neural Net from Scratch",
+    description: "Fully vectorized backprop in NumPy. No frameworks.",
+    tag: "ML",
+    href: "#",
+  },
+  {
+    title: "SIR/SIS Epidemic Models",
+    description: "Mathematical biology simulations in Python.",
+    tag: "Computational",
+    href: "#",
   },
 ];
 
@@ -56,7 +101,7 @@ const TICKER_ITEMS = [
   "Fluor Corporation",
   "Dept. of Biomedical Informatics",
   "Dept. of Applied Math & Stats",
-  "Wang Center",
+  "CalArts",
   "Stony Brook University",
 ];
 
@@ -67,9 +112,10 @@ const LINKS = {
 };
 
 const SKILLS_DATA = [
-  { label: "Languages", value: "Python, Java, R, SQL, TypeScript/JS, HTML/CSS" },
-  { label: "Frameworks", value: "Spring Boot, React, RESTful APIs; some Angular" },
-  { label: "Data", value: "ETL/pipelines, databases, viz; Git, VS Code, Bash/Zsh" },
+  { label: "Languages", value: "Python, TypeScript, JavaScript, Java, R, SQL, HTML/CSS" },
+  { label: "Frameworks", value: "React, Spring Boot, Node.js, Next.js, RESTful APIs" },
+  { label: "AI & Data", value: "LLM pipelines, agentic systems, ETL, data viz, NumPy, pandas" },
+  { label: "Design", value: "Figma, UX research, interaction design, prototyping" },
 ];
 
 /* ─────────────── HELPERS ─────────────── */
@@ -128,12 +174,7 @@ function CustomCursor() {
   return (
     <motion.div
       className="pointer-events-none fixed top-0 left-0 z-[9999] hidden md:block"
-      style={{
-        x: cursorX,
-        y: cursorY,
-        translateX: "-50%",
-        translateY: "-50%",
-      }}
+      style={{ x: cursorX, y: cursorY, translateX: "-50%", translateY: "-50%" }}
     >
       <AnimatePresence>
         {visible && (
@@ -181,11 +222,7 @@ function Nav() {
         </span>
         <div className="flex items-center gap-6 text-sm font-medium">
           {["Work", "Play", "Info"].map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
-              className="group relative py-1"
-            >
+            <a key={link} href={`#${link.toLowerCase()}`} className="group relative py-1">
               {link}
               <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-accent transition-all duration-300 group-hover:w-full" />
             </a>
@@ -224,11 +261,7 @@ function Hero() {
             key={i}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.5,
-              ease: [0.22, 1, 0.36, 1],
-              delay: 0.3 + i * 0.04,
-            }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.3 + i * 0.04 }}
             className="inline-block mr-[0.3em]"
           >
             {word}
@@ -246,29 +279,18 @@ function Hero() {
           href="#work"
           className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background transition-transform duration-200 hover:scale-105"
         >
-          See the work
-          <ArrowUpRight className="h-4 w-4" />
+          See the work <ArrowUpRight className="h-4 w-4" />
         </a>
-        <a
-          href={LINKS.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
-        >
+        <a href={LINKS.github} target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60">
           <Github className="h-4 w-4" /> Github
         </a>
-        <a
-          href={LINKS.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
-        >
+        <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60">
           <Linkedin className="h-4 w-4" /> LinkedIn
         </a>
-        <a
-          href={LINKS.email}
-          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
-        >
+        <a href={LINKS.email}
+          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60">
           <Mail className="h-4 w-4" /> Email
         </a>
       </motion.div>
@@ -280,19 +302,12 @@ function Hero() {
 
 function Ticker() {
   const items = [...TICKER_ITEMS, ...TICKER_ITEMS];
-
   return (
     <FadeUp>
       <div className="border-y border-border overflow-hidden py-5">
         <div className="animate-marquee flex w-max items-center gap-8 whitespace-nowrap">
-          {items.map((name, i) => (
+          {[...items, ...items].map((name, i) => (
             <span key={i} className="flex items-center gap-4 text-sm font-medium text-muted">
-              <span className="text-accent">•</span>
-              {name}
-            </span>
-          ))}
-          {items.map((name, i) => (
-            <span key={`dup-${i}`} className="flex items-center gap-4 text-sm font-medium text-muted">
               <span className="text-accent">•</span>
               {name}
             </span>
@@ -305,16 +320,16 @@ function Ticker() {
 
 /* ─────────────── PROJECT CARD ─────────────── */
 
-function ProjectCard({
-  project,
-  index,
-}: {
-  project: (typeof PROJECTS)[0];
-  index: number;
-}) {
+function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index: number }) {
   return (
     <FadeUp delay={index * 0.1}>
-      <div className="group relative flex flex-col rounded-2xl border border-border bg-background p-8 transition-all duration-350 ease-out hover:border-transparent hover:bg-dark-card">
+      <div className="group relative flex flex-col rounded-2xl border border-border bg-background p-8 transition-all duration-350 ease-out hover:border-transparent hover:bg-dark-card h-full">
+        {project.featured && (
+          <span className="mb-4 inline-flex w-fit items-center gap-1 rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
+            <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
+            Featured
+          </span>
+        )}
         <div className="flex items-start justify-between">
           <div>
             <h3 className="text-xl font-bold leading-snug tracking-tight transition-colors duration-350 group-hover:text-accent">
@@ -328,30 +343,21 @@ function ProjectCard({
             <ArrowUpRight className="h-4 w-4 transition-transform duration-350 group-hover:rotate-45 group-hover:text-accent" />
           </div>
         </div>
-
         <p className="mt-4 text-sm leading-relaxed text-muted transition-colors duration-350 group-hover:text-background/60">
           {project.description}
         </p>
-
         <div className="mt-6 flex flex-wrap gap-2">
           {project.skills.map((s) => (
-            <span
-              key={s}
-              className="rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors duration-350 group-hover:border-background/20 group-hover:text-background/80"
-            >
+            <span key={s} className="rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors duration-350 group-hover:border-background/20 group-hover:text-background/80">
               {s}
             </span>
           ))}
         </div>
-
         <div className="mt-6">
-          <a
-            href={project.link.href}
-            className="inline-flex items-center gap-1 text-sm font-semibold text-accent underline underline-offset-4 transition-opacity hover:opacity-70 group-hover:text-accent"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {project.link.label}
-            <ArrowUpRight className="h-3.5 w-3.5" />
+          <a href={project.link.href}
+            className="inline-flex items-center gap-1 text-sm font-semibold text-accent underline underline-offset-4 transition-opacity hover:opacity-70"
+            onClick={(e) => e.stopPropagation()}>
+            {project.link.label} <ArrowUpRight className="h-3.5 w-3.5" />
           </a>
         </div>
       </div>
@@ -366,9 +372,7 @@ function SelectedWork() {
     <section id="work" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
       <FadeUp>
         <div className="flex items-baseline gap-4">
-          <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-            Selected Work
-          </h2>
+          <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">Selected Work</h2>
           <span className="text-sm font-medium text-muted">shipped + in progress</span>
         </div>
       </FadeUp>
@@ -387,29 +391,36 @@ function Experiments() {
   return (
     <section id="play" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
       <FadeUp>
-        <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-          Play
-        </h2>
+        <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">Play</h2>
       </FadeUp>
       <FadeUp delay={0.1}>
         <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
-          Little prototypes, visual riffs, and throwaway ideas that sometimes grow up into real projects. Reach out if something sparks.
+          Little prototypes, visual riffs, and experiments that sometimes grow into real projects.
         </p>
       </FadeUp>
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, n) => (
+        {EXPERIMENTS.map((exp, n) => (
           <FadeUp key={n} delay={n * 0.08}>
-            <motion.div
-              whileHover={{
-                rotate: [0, -1, 1, -0.5, 0],
-                transition: { duration: 0.5, type: "spring" },
-              }}
-              className="flex aspect-[4/3] items-center justify-center rounded-2xl border-2 border-dashed border-border"
+            <motion.a
+              href={exp.href}
+              whileHover={{ rotate: [0, -1, 1, -0.5, 0], transition: { duration: 0.5, type: "spring" } }}
+              className="group flex aspect-[4/3] flex-col justify-between rounded-2xl border border-border bg-background p-6 transition-all duration-300 hover:border-accent/40 hover:bg-dark-card"
             >
-              <span className="text-sm font-medium text-muted">
-                Drop an experiment here
+              <span className="inline-flex w-fit rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
+                {exp.tag}
               </span>
-            </motion.div>
+              <div>
+                <h3 className="text-base font-bold tracking-tight transition-colors group-hover:text-accent">
+                  {exp.title}
+                </h3>
+                <p className="mt-1 text-sm text-muted transition-colors group-hover:text-background/60">
+                  {exp.description}
+                </p>
+              </div>
+              <div className="flex items-center gap-1 text-xs font-semibold text-accent opacity-0 transition-opacity group-hover:opacity-100">
+                View <ExternalLink className="h-3 w-3" />
+              </div>
+            </motion.a>
           </FadeUp>
         ))}
       </div>
@@ -423,32 +434,28 @@ function Info() {
   return (
     <section id="info" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
       <div className="grid gap-12 lg:grid-cols-5">
-        {/* Bio - 3 columns */}
+        {/* Bio */}
         <div className="lg:col-span-3">
           <FadeUp>
-            <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-              Info
-            </h2>
+            <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">Info</h2>
           </FadeUp>
           <FadeUp delay={0.1}>
             <p className="mt-6 text-lg leading-relaxed text-muted">
-              I&rsquo;m a senior at Stony Brook (Technological Systems Mgmt, CS + Applied Stats minor) who likes turning messy problems into clear products. I enjoy fast iterations, clean interfaces, and the boring-but-essential parts of engineering: naming, docs, and tests.
+              Recent graduate from Stony Brook University (B.S. Technological Systems Management,
+              Computer Science specialization, double major in Applied Mathematics and Statistics —
+              Dean&rsquo;s List). Based in New York City, actively seeking full-time roles at the
+              intersection of engineering, AI, and product. I like turning messy problems into clear
+              systems, fast iterations, and the boring-but-essential parts of engineering: naming,
+              docs, and tests.
             </p>
           </FadeUp>
 
           <FadeUp delay={0.2}>
             <div className="mt-10 space-y-4">
               {SKILLS_DATA.map((item) => (
-                <div
-                  key={item.label}
-                  className="flex flex-col gap-1 border-b border-border pb-4 sm:flex-row sm:gap-6"
-                >
-                  <span className="w-28 shrink-0 text-sm font-bold uppercase tracking-wider">
-                    {item.label}
-                  </span>
-                  <span className="text-sm leading-relaxed text-muted">
-                    {item.value}
-                  </span>
+                <div key={item.label} className="flex flex-col gap-1 border-b border-border pb-4 sm:flex-row sm:gap-6">
+                  <span className="w-28 shrink-0 text-sm font-bold uppercase tracking-wider">{item.label}</span>
+                  <span className="text-sm leading-relaxed text-muted">{item.value}</span>
                 </div>
               ))}
             </div>
@@ -456,44 +463,29 @@ function Info() {
 
           <FadeUp delay={0.25}>
             <div className="mt-8 flex flex-wrap gap-4">
-              <a
-                href={LINKS.email}
-                className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
-              >
+              <a href={LINKS.email} className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60">
                 <Mail className="h-4 w-4" /> Email me
               </a>
-              <a
-                href={LINKS.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
-              >
+              <a href={LINKS.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60">
                 <Github className="h-4 w-4" /> GitHub
               </a>
-              <a
-                href={LINKS.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
-              >
+              <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60">
                 <Linkedin className="h-4 w-4" /> LinkedIn
               </a>
             </div>
           </FadeUp>
         </div>
 
-        {/* Sidebar - 2 columns */}
+        {/* Sidebar */}
         <div className="flex flex-col gap-6 lg:col-span-2">
           <FadeUp delay={0.3}>
             <div className="rounded-2xl border border-border bg-background/60 p-6 backdrop-blur-sm">
-              <h3 className="text-sm font-bold uppercase tracking-wider">
-                Currently
-              </h3>
+              <h3 className="text-sm font-bold uppercase tracking-wider">Currently</h3>
               <ul className="mt-4 space-y-3">
                 {[
-                  "Summer intern at Fluor (Supply Chain & Strategy)",
-                  "Practicing deeper coding (beyond LeetCode)",
-                  "Exploring ML + product systems projects",
+                  "Seeking full-time roles in NYC (open to hybrid/remote)",
+                  "Building out AI and design portfolio projects",
+                  "CalArts UI/UX Design Specialization — in progress",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-muted">
                     <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
@@ -506,14 +498,13 @@ function Info() {
 
           <FadeUp delay={0.4}>
             <div className="rounded-2xl border border-border bg-background/60 p-6 backdrop-blur-sm">
-              <h3 className="text-sm font-bold uppercase tracking-wider">
-                Looking for
-              </h3>
+              <h3 className="text-sm font-bold uppercase tracking-wider">Open to</h3>
               <ul className="mt-4 space-y-3">
                 {[
-                  "Fall collaborations (NYC)",
-                  "Mentors in ML/product design",
-                  "Opportunities post‑grad (Jan '26)",
+                  "Software engineering & full-stack roles",
+                  "Solutions engineering & GTM technical roles",
+                  "Product design & UX research roles",
+                  "AI/ML adjacent product and ops roles",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-muted">
                     <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
@@ -521,6 +512,15 @@ function Info() {
                   </li>
                 ))}
               </ul>
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.45}>
+            <div className="rounded-2xl border border-accent/20 bg-accent/5 p-6">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-accent">Work Authorization</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted">
+                Authorized to work in the US on STEM OPT (3-year eligibility). No sponsorship required for STEM roles.
+              </p>
             </div>
           </FadeUp>
         </div>
@@ -540,35 +540,20 @@ function Footer() {
             Thank you for your curiosity.
           </h2>
         </FadeUp>
-
         <FadeUp delay={0.1}>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-background/70">
             If something here resonated, say hi. I love talking about thoughtful software, calm interfaces, and building with intention.
           </p>
         </FadeUp>
-
         <FadeUp delay={0.15}>
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a
-              href={LINKS.email}
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition-transform duration-200 hover:scale-105"
-            >
+            <a href={LINKS.email} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition-transform duration-200 hover:scale-105">
               <Mail className="h-4 w-4" /> Let&rsquo;s chat
             </a>
-            <a
-              href={LINKS.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-background/20 px-5 py-3 text-sm font-medium text-background/80 transition-colors hover:border-background/40 hover:text-background"
-            >
+            <a href={LINKS.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-background/20 px-5 py-3 text-sm font-medium text-background/80 transition-colors hover:border-background/40 hover:text-background">
               <Github className="h-4 w-4" /> GitHub
             </a>
-            <a
-              href={LINKS.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-background/20 px-5 py-3 text-sm font-medium text-background/80 transition-colors hover:border-background/40 hover:text-background"
-            >
+            <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-background/20 px-5 py-3 text-sm font-medium text-background/80 transition-colors hover:border-background/40 hover:text-background">
               <Linkedin className="h-4 w-4" /> LinkedIn
             </a>
           </div>
@@ -577,75 +562,33 @@ function Footer() {
         <FadeUp delay={0.25}>
           <div className="mt-20 grid gap-10 border-t border-background/10 pt-12 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
-                Visit
-              </h4>
-              <p className="mt-3 text-sm text-background/70">
-                NYC
-                <br />
-                often in Houston
-              </p>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">Visit</h4>
+              <p className="mt-3 text-sm text-background/70">New York City</p>
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
-                Explore
-              </h4>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">Explore</h4>
               <ul className="mt-3 space-y-2 text-sm">
                 {["Work", "Play", "Info"].map((link) => (
                   <li key={link}>
-                    <a
-                      href={`#${link.toLowerCase()}`}
-                      className="text-background/70 transition-colors hover:text-background"
-                    >
-                      {link}
-                    </a>
+                    <a href={`#${link.toLowerCase()}`} className="text-background/70 transition-colors hover:text-background">{link}</a>
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
-                Learn
-              </h4>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">Education</h4>
               <p className="mt-3 text-sm text-background/70">
-                BS, Tech Systems Mgmt + CS &amp; Applied Maths + Stats
-                <br />
-                Stony Brook University
+                B.S. Technological Systems Management<br />
+                + Applied Mathematics &amp; Statistics<br />
+                Stony Brook University, Dec 2025
               </p>
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
-                Let&rsquo;s talk
-              </h4>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">Let&rsquo;s talk</h4>
               <ul className="mt-3 space-y-2 text-sm">
-                <li>
-                  <a
-                    href={LINKS.email}
-                    className="text-background/70 transition-colors hover:text-background"
-                  >
-                    vaishvijariwala03@gmail.com
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={LINKS.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-background/70 transition-colors hover:text-background"
-                  >
-                    LinkedIn
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={LINKS.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-background/70 transition-colors hover:text-background"
-                  >
-                    GitHub
-                  </a>
-                </li>
+                <li><a href={LINKS.email} className="text-background/70 transition-colors hover:text-background">vaishvijariwala03@gmail.com</a></li>
+                <li><a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer" className="text-background/70 transition-colors hover:text-background">LinkedIn</a></li>
+                <li><a href={LINKS.github} target="_blank" rel="noopener noreferrer" className="text-background/70 transition-colors hover:text-background">GitHub</a></li>
               </ul>
             </div>
           </div>
