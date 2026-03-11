@@ -2,13 +2,15 @@
 
 @theme inline {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --color-background: #fde7ee;
+  --font-heading: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  --color-primary: #2563eb;
+  --color-background: #f7f7f5;
   --color-foreground: #111111;
-  --color-accent: #e94560;
-  --color-dark: #0a0a0a;
-  --color-dark-card: #1a1a2e;
-  --color-muted: #111111b3;
-  --color-border: #11111119;
+  --color-accent: #111111;
+  --color-dark: #0b0b0b;
+  --color-dark-card: #151515;
+  --color-muted: #5f5f5f;
+  --color-border: #d4d4cf;
 }
 
 * {
@@ -18,6 +20,11 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: #fdfdfc;
+  color: var(--color-foreground);
 }
 
 ::selection {
@@ -52,5 +59,56 @@ html {
 
 .animate-pulse-dot {
   animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.03em;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 0.65rem 1.6rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.tag-pill {
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tag-yellow {
+  background-color: #fef9c3;
+}
+
+.tag-green {
+  background-color: #bbf7d0;
+}
+
+.tag-blue {
+  background-color: #bfdbfe;
+}
+
+.tag-pink {
+  background-color: #fed7e2;
 }
 

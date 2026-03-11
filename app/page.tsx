@@ -214,13 +214,13 @@ function Nav() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
-        <a href="#top" className="text-lg font-extrabold tracking-tight">
-          Vaishvi Jariwala
+        <a href="#top" className="text-sm font-semibold uppercase tracking-[0.25em]">
+          Vaishvi&nbsp;Jariwala
         </a>
-        <span className="hidden text-sm font-medium tracking-wide text-muted sm:block">
-          Designer &middot; Engineer
+        <span className="hidden text-xs font-medium tracking-[0.2em] uppercase text-muted sm:block">
+          Designer · Engineer
         </span>
-        <div className="flex items-center gap-6 text-sm font-medium">
+        <div className="flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.2em]">
           {["Work", "Play", "Info"].map((link) => (
             <a key={link} href={`#${link.toLowerCase()}`} className="group relative py-1">
               {link}
@@ -244,10 +244,6 @@ function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const y = useTransform(scrollYProgress, [0, 0.5], [0, -80]);
 
-  const heroText =
-    "Vaishvi is a design‑savvy engineer in NYC. She builds systems and stories that make data, products, and brands easier to understand. Her sweet spot is prototype‑to‑production — rapid exploration that turns into real, shipped experiences.";
-  const words = heroText.split(" ");
-
   return (
     <motion.header
       id="top"
@@ -255,19 +251,36 @@ function Hero() {
       style={{ opacity, y }}
       className="relative mx-auto max-w-7xl px-6 pt-32 pb-16 lg:px-10 lg:pt-40 lg:pb-20"
     >
-      <h1 className="text-[clamp(2rem,5vw,5rem)] font-extrabold leading-[1.05] tracking-tight text-balance">
-        {words.map((word, i) => (
-          <motion.span
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.3 + i * 0.04 }}
-            className="inline-block mr-[0.3em]"
-          >
-            {word}
-          </motion.span>
-        ))}
-      </h1>
+      <div className="grid gap-4 text-[clamp(1.6rem,2.3vw,2.1rem)] leading-[1.4] font-heading">
+        <div className="grid grid-cols-[minmax(70px,120px)_1fr] gap-x-6">
+          <span className="eyebrow text-muted">HELLO</span>
+          <p className="tracking-tight">
+            My name is <span className="italic">Vaishvi</span> and I&rsquo;m a design‑savvy{" "}
+            <span className="italic">engineer</span> in NYC.
+          </p>
+        </div>
+        <div className="grid grid-cols-[minmax(70px,120px)_1fr] gap-x-6">
+          <span className="eyebrow text-muted">I BUILD</span>
+          <p className="tracking-tight">
+            systems and stories that make <span className="italic">data</span>, products, and brands
+            easier to understand.
+          </p>
+        </div>
+        <div className="grid grid-cols-[minmax(70px,120px)_1fr] gap-x-6">
+          <span className="eyebrow text-muted">I LOVE</span>
+          <p className="tracking-tight">
+            paper‑to‑prototype pipelines, layouts, and interfaces that feel calm, intentional, and{" "}
+            <span className="italic">ship‑ready</span>.
+          </p>
+        </div>
+        <div className="grid grid-cols-[minmax(70px,120px)_1fr] gap-x-6">
+          <span className="eyebrow text-muted">SWEET SPOT</span>
+          <p className="tracking-tight">
+            moving from <span className="italic">prototype to production</span>—turning rapid
+            exploration into real products.
+          </p>
+        </div>
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -277,7 +290,7 @@ function Hero() {
       >
         <a
           href="#work"
-          className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background transition-transform duration-200 hover:scale-105"
+          className="inline-flex items-center gap-2 btn-primary transition-transform duration-200 hover:scale-105"
         >
           See the work <ArrowUpRight className="h-4 w-4" />
         </a>
@@ -324,6 +337,14 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
   return (
     <FadeUp delay={index * 0.1}>
       <div className="group relative flex flex-col rounded-2xl border border-border bg-background p-8 transition-all duration-350 ease-out hover:border-transparent hover:bg-dark-card h-full">
+        <div className="mb-4 flex items-center justify-between text-xs font-medium text-muted border-b border-border pb-2">
+          <span className="tracking-[0.2em] uppercase">
+            {String(index + 1).padStart(3, "0")}
+          </span>
+          <span className="text-[0.7rem] tracking-[0.18em] uppercase">
+            {project.org}
+          </span>
+        </div>
         {project.featured && (
           <span className="mb-4 inline-flex w-fit items-center gap-1 rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
             <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-accent" />
@@ -347,11 +368,18 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
           {project.description}
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
-          {project.skills.map((s) => (
-            <span key={s} className="rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors duration-350 group-hover:border-background/20 group-hover:text-background/80">
-              {s}
-            </span>
-          ))}
+          {project.skills.map((s, i) => {
+            const palette = ["tag-yellow", "tag-green", "tag-blue", "tag-pink"];
+            const colorClass = palette[i % palette.length];
+            return (
+              <span
+                key={s}
+                className={`tag-pill ${colorClass} border border-border transition-colors duration-350 group-hover:border-background/40`}
+              >
+                {s}
+              </span>
+            );
+          })}
         </div>
         <div className="mt-6">
           <a href={project.link.href}
@@ -372,8 +400,8 @@ function SelectedWork() {
     <section id="work" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
       <FadeUp>
         <div className="flex items-baseline gap-4">
-          <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">Selected Work</h2>
-          <span className="text-sm font-medium text-muted">shipped + in progress</span>
+          <h2 className="font-heading text-3xl md:text-4xl leading-tight">Selected Work</h2>
+          <span className="text-sm font-medium text-muted">Shipped and in progress</span>
         </div>
       </FadeUp>
       <div className="mt-12 grid gap-6 md:grid-cols-2">
@@ -391,7 +419,7 @@ function Experiments() {
   return (
     <section id="play" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
       <FadeUp>
-        <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">Play</h2>
+        <h2 className="font-heading text-3xl md:text-4xl leading-tight">Play</h2>
       </FadeUp>
       <FadeUp delay={0.1}>
         <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
@@ -406,7 +434,7 @@ function Experiments() {
               whileHover={{ rotate: [0, -1, 1, -0.5, 0], transition: { duration: 0.5, type: "spring" } }}
               className="group flex aspect-[4/3] flex-col justify-between rounded-2xl border border-border bg-background p-6 transition-all duration-300 hover:border-accent/40 hover:bg-dark-card"
             >
-              <span className="inline-flex w-fit rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
+              <span className="tag-pill tag-blue inline-flex w-fit text-foreground">
                 {exp.tag}
               </span>
               <div>
@@ -437,7 +465,7 @@ function Info() {
         {/* Bio */}
         <div className="lg:col-span-3">
           <FadeUp>
-            <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">Info</h2>
+            <h2 className="font-heading text-3xl md:text-4xl leading-tight">Info</h2>
           </FadeUp>
           <FadeUp delay={0.1}>
             <p className="mt-6 text-lg leading-relaxed text-muted">
@@ -536,7 +564,7 @@ function Footer() {
     <footer className="bg-dark text-background">
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
         <FadeUp>
-          <h2 className="text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[1.05] tracking-tight text-balance">
+          <h2 className="font-heading text-[clamp(2.4rem,4.8vw,4.8rem)] leading-[1.02] text-balance">
             Thank you for your curiosity.
           </h2>
         </FadeUp>
@@ -547,7 +575,7 @@ function Footer() {
         </FadeUp>
         <FadeUp delay={0.15}>
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a href={LINKS.email} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition-transform duration-200 hover:scale-105">
+            <a href={LINKS.email} className="inline-flex items-center gap-2 btn-primary transition-transform duration-200 hover:scale-105">
               <Mail className="h-4 w-4" /> Let&rsquo;s chat
             </a>
             <a href={LINKS.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-background/20 px-5 py-3 text-sm font-medium text-background/80 transition-colors hover:border-background/40 hover:text-background">
@@ -611,7 +639,6 @@ export default function Portfolio() {
       <Nav />
       <main>
         <Hero />
-        <Ticker />
         <SelectedWork />
         <Experiments />
         <Info />
