@@ -1,0 +1,626 @@
+/* WineWright case study — scoped so global portfolio styles don’t override */
+.winewright-page,
+.winewright-page * {
+  cursor: auto !important;
+}
+
+.winewright-page *,
+.winewright-page *::before,
+.winewright-page *::after {
+  box-sizing: border-box;
+}
+
+.winewright-page {
+  --wine: #7b2d3e;
+  --wine-deep: #4a1a25;
+  --wine-pale: #f5eef0;
+  --gold: #b8965a;
+  --gold-pale: #f7f0e6;
+  --olive: #6b7c4a;
+  --periwinkle: #7b8fcc;
+  --cream: #faf7f2;
+  --ink: #1c1917;
+  --muted: #6b6560;
+  --border: rgba(28, 25, 23, 0.1);
+
+  font-family: var(--font-dm-sans), "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+.winewright-page .font-playfair {
+  font-family: var(--font-playfair), "Playfair Display", Georgia, serif;
+}
+
+/* ── BACK NAV ── */
+.winewright-back {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 1rem 2rem 0;
+}
+.winewright-back a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.winewright-back a:hover {
+  color: #fff;
+}
+
+/* ── HERO ── */
+.winewright-page .hero {
+  background: var(--wine-deep);
+  color: white;
+  padding: 5rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.winewright-page .hero::before {
+  content: "";
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(184, 150, 90, 0.12);
+  pointer-events: none;
+}
+.winewright-page .hero::after {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  left: 10%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(123, 45, 62, 0.35);
+  pointer-events: none;
+}
+.winewright-page .hero-inner {
+  max-width: 840px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.winewright-page .wip-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(184, 150, 90, 0.2);
+  border: 1px solid rgba(184, 150, 90, 0.5);
+  color: #e8c98a;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 1.5rem;
+}
+.winewright-page .wip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e8c98a;
+  animation: winewright-pulse 2s ease-in-out infinite;
+}
+@keyframes winewright-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+.winewright-page .hero h1 {
+  font-family: var(--font-playfair), "Playfair Display", Georgia, serif;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+.winewright-page .hero h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+.winewright-page .hero-sub {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 500px;
+  margin-bottom: 2.5rem;
+}
+.winewright-page .meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.winewright-page .meta-item label {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 3px;
+}
+.winewright-page .meta-item span {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── CONTENT ── */
+.winewright-page .content {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+/* ── SECTION TITLES ── */
+.winewright-page .section-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.winewright-page .section-title {
+  font-family: var(--font-playfair), "Playfair Display", Georgia, serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 1.25rem;
+  color: var(--wine-deep);
+}
+.winewright-page .section-body {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.winewright-page .divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3.5rem 0;
+}
+
+/* ── OVERVIEW CARDS ── */
+.winewright-page .overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+@media (max-width: 600px) {
+  .winewright-page .overview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.winewright-page .overview-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+.winewright-page .overview-card .icon {
+  font-size: 1.4rem;
+  margin-bottom: 0.6rem;
+}
+.winewright-page .overview-card h3 {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+.winewright-page .overview-card p {
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+/* ── PROCESS STEPS ── */
+.winewright-page .process-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+}
+.winewright-page .step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  border-bottom: 1px solid var(--border);
+}
+.winewright-page .step:last-child {
+  border-bottom: none;
+}
+.winewright-page .step-num {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1.25rem 0;
+  font-family: var(--font-playfair), "Playfair Display", Georgia, serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+  border-right: 1px solid var(--border);
+}
+.winewright-page .step-content {
+  padding: 1.25rem 1.5rem;
+}
+.winewright-page .step-content h4 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--wine-deep);
+  margin-bottom: 0.3rem;
+}
+.winewright-page .step-content p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── DESIGN SYSTEM PALETTE ── */
+.winewright-page .palette-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.winewright-page .swatch {
+  flex: 1;
+  min-width: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.winewright-page .swatch-color {
+  height: 52px;
+}
+.winewright-page .swatch-label {
+  padding: 6px 8px;
+  background: white;
+  font-size: 11px;
+  color: var(--muted);
+}
+.winewright-page .swatch-label strong {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ── SCREEN MOCKUPS ── */
+.winewright-page .screens-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+@media (max-width: 560px) {
+  .winewright-page .screens-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.winewright-page .screen-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.winewright-page .screen-mockup {
+  background: #7b2d3e;
+  padding: 1.5rem 1rem;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.winewright-page .phone-frame {
+  width: 110px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+.winewright-page .phone-status {
+  background: #7b2d3e;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  gap: 4px;
+}
+.winewright-page .phone-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+}
+.winewright-page .phone-body {
+  background: #7b2d3e;
+  padding: 8px;
+}
+.winewright-page .phone-header {
+  font-size: 7px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 8px;
+}
+.winewright-page .phone-icon-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin-bottom: 8px;
+}
+.winewright-page .phone-icon {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+}
+.winewright-page .phone-search {
+  background: #b8965a;
+  border-radius: 8px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  gap: 4px;
+}
+.winewright-page .phone-search-text {
+  font-size: 6px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.winewright-page .wine-detail-phone .phone-body {
+  padding: 8px 6px;
+}
+.winewright-page .wine-name {
+  font-size: 7px;
+  font-weight: 700;
+  color: #b8965a;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.winewright-page .wine-attr-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.winewright-page .wine-attr {
+  font-size: 5px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
+  flex: 1;
+}
+.winewright-page .wine-img-placeholder {
+  width: 28px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  margin: 0 auto 6px;
+  display: block;
+}
+.winewright-page .cin-cin {
+  font-size: 6px;
+  font-weight: 700;
+  color: #b8965a;
+  text-align: center;
+  letter-spacing: 0.15em;
+  margin-bottom: 6px;
+}
+
+.winewright-page .screen-info {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border);
+}
+.winewright-page .screen-info h4 {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--wine-deep);
+  margin-bottom: 0.2rem;
+}
+.winewright-page .screen-info p {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* ── ICON SYSTEM ── */
+.winewright-page .icons-row {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.winewright-page .icon-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 72px;
+}
+.winewright-page .icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.winewright-page .icon-card label {
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ── LEARNINGS ── */
+.winewright-page .learnings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+@media (max-width: 560px) {
+  .winewright-page .learnings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.winewright-page .learning-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+.winewright-page .learning-card .tag {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-bottom: 0.6rem;
+}
+.winewright-page .tag-research {
+  background: #f0f4ff;
+  color: #4455bb;
+}
+.winewright-page .tag-design {
+  background: var(--wine-pale);
+  color: var(--wine);
+}
+.winewright-page .tag-ux {
+  background: var(--gold-pale);
+  color: #8a6030;
+}
+.winewright-page .tag-next {
+  background: #eef6ee;
+  color: #3a6b3a;
+}
+.winewright-page .learning-card p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ── NEXT STEPS ── */
+.winewright-page .next-steps {
+  background: var(--wine-deep);
+  color: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin-top: 3.5rem;
+}
+.winewright-page .next-steps .section-label {
+  color: var(--gold);
+  opacity: 0.9;
+}
+.winewright-page .next-steps .section-title {
+  color: white;
+}
+.winewright-page .next-list {
+  list-style: none;
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.winewright-page .next-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+.winewright-page .next-list li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+/* ── CTA ── */
+.winewright-page .cta-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 3.5rem;
+}
+.winewright-page .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.65rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-dm-sans), "DM Sans", sans-serif;
+  transition: opacity 0.15s;
+}
+.winewright-page .btn:hover {
+  opacity: 0.82;
+}
+.winewright-page .btn-primary {
+  background: var(--wine);
+  color: white;
+}
+.winewright-page .btn-outline {
+  background: transparent;
+  color: var(--wine);
+  border: 1px solid var(--wine);
+}
+
+/* ── FOOTER NOTE ── */
+.winewright-page .footer-note {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ── CASE STUDY FOOTER ILLUSTRATION ── */
+.winewright-page .case-study-footer-art {
+  margin-top: 3rem;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.winewright-page .case-study-footer-img {
+  width: 100%;
+  max-width: min(100%, 520px);
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  mix-blend-mode: multiply;
+  opacity: 0.95;
+}

@@ -1,0 +1,402 @@
+/* Calm portfolio — Laurel-style proportions: ~¼ sidebar, 3-col grid, 28px gutters */
+
+.calm-portfolio {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "helvetica neue", helvetica, arial,
+    sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  text-transform: lowercase;
+  color: #3f3e3e;
+  background: #fdfbf3;
+  min-height: 100vh;
+  padding: 2rem;
+  padding-bottom: 4rem;
+}
+
+.calm-portfolio *,
+.calm-portfolio *::before,
+.calm-portfolio *::after {
+  box-sizing: border-box;
+}
+
+.calm-portfolio a {
+  color: #3f3e3e;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: transparent;
+}
+
+.calm-portfolio a:hover {
+  border-bottom-color: rgba(0, 0, 0, 0.35);
+}
+
+.calm-portfolio a.calm-name {
+  border: 0;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.calm-portfolio .calm-nav a {
+  border: 0;
+  font-size: clamp(1.65rem, 3.2vw, 2rem);
+  line-height: 1.12;
+  font-weight: 400;
+}
+
+.calm-portfolio .gray {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.calm-shell {
+  display: grid;
+  /* Sidebar ~22–25% feel; main takes the rest (matches laurelschwulst.com home) */
+  grid-template-columns: minmax(11rem, 22%) minmax(0, 1fr);
+  column-gap: clamp(1.75rem, 4vw, 2.5rem);
+  row-gap: 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.calm-sidebar {
+  position: relative;
+}
+
+.calm-main {
+  min-width: 0;
+}
+
+.calm-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  margin-top: 0.25rem;
+}
+
+.calm-grid .grid-item {
+  margin-bottom: 0.5em;
+  position: relative;
+}
+
+.calm-grid .grid-item a {
+  border: 0;
+}
+
+.calm-grid figure {
+  margin: 0 0 0.5em;
+  padding: 0;
+}
+
+.calm-grid .video-mask {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Mixed ratios like the reference: square vs ~3:2 landscape */
+.calm-grid .video-mask.calm-ratio-square {
+  aspect-ratio: 1 / 1;
+}
+
+.calm-grid .video-mask.calm-ratio-landscape {
+  aspect-ratio: 3 / 2;
+}
+
+.calm-grid .video-mask video,
+.calm-grid .video-mask .calm-placeholder,
+.calm-grid .video-mask .calm-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.92;
+  mix-blend-mode: multiply;
+}
+
+.calm-grid .calm-placeholder {
+  border-radius: 14px;
+}
+
+.calm-grid .title {
+  position: relative;
+  margin-top: 0.45rem;
+  line-height: 1.3;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.calm-grid .title .gray {
+  font-size: 0.75rem;
+  margin-top: 0.2em;
+  line-height: 1.35;
+}
+
+.calm-section {
+  margin-top: 4em;
+  max-width: 42em;
+}
+
+.calm-section h2 {
+  font-weight: 300;
+  font-size: 1.75em;
+  margin: 0 0 0.75em;
+}
+
+.calm-section p {
+  margin: 1em 0;
+}
+
+.calm-play-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.calm-play-list li {
+  margin: 0.5em 0;
+}
+
+.calm-footer {
+  margin-top: 5em;
+  padding-top: 2em;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.75em;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.calm-footer a {
+  color: inherit;
+  border-bottom-color: rgba(0, 0, 0, 0.25);
+}
+
+.calm-footer .calm-footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em 2em;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.calm-back-top {
+  border: 0 !important;
+  font-size: 1.25em;
+  line-height: 1;
+}
+
+/* WineWright modal — description on card click */
+.calm-card-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.calm-card-btn .title {
+  cursor: pointer;
+}
+
+.calm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(63, 62, 62, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: calm-fade-in 0.2s ease;
+}
+
+@keyframes calm-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.calm-modal {
+  position: relative;
+  max-width: 32rem;
+  width: 100%;
+  max-height: min(85vh, 36rem);
+  overflow-y: auto;
+  padding: 1.75rem 1.75rem 1.5rem;
+  background: #fdfbf3;
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.calm-modal.calm-modal-wide {
+  max-width: min(56rem, 96vw);
+  max-height: min(88vh, 52rem);
+}
+
+.calm-modal.calm-modal-ai-fit {
+  max-width: min(72rem, 96vw);
+  max-height: 90vh;
+  padding: 0;
+  overflow: hidden;
+}
+
+.calm-modal.calm-modal-ai-fit .calm-modal-close {
+  z-index: 5;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.calm-modal h2 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin: 0 0 1rem;
+  line-height: 1.25;
+}
+
+.calm-modal p {
+  margin: 0 0 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #3f3e3e;
+}
+
+.calm-modal .calm-modal-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  align-items: center;
+}
+
+.calm-modal-close {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 50%;
+  background: transparent;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #3f3e3e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calm-modal-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.ai-fit-modal {
+  text-transform: none;
+}
+
+.ai-fit-hero h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.ai-fit-hero p {
+  margin: 0.65rem 0 0;
+  color: rgba(0, 0, 0, 0.68);
+}
+
+.ai-fit-tags {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.ai-fit-tags span {
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.74rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #fafafa;
+}
+
+.ai-fit-section {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.ai-fit-section h3 {
+  margin: 0;
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ai-fit-section p {
+  margin: 0.45rem 0 0;
+}
+
+.ai-fit-section ul {
+  margin: 0.45rem 0 0;
+  padding-left: 1.05rem;
+}
+
+.ai-fit-section li {
+  margin: 0.28rem 0;
+  line-height: 1.4;
+}
+
+@media screen and (max-width: 1024px) {
+  .calm-shell {
+    grid-template-columns: minmax(10rem, 26%) minmax(0, 1fr);
+    column-gap: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 820px) {
+  .calm-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  .calm-portfolio .calm-nav a {
+    font-size: clamp(1.35rem, 4vw, 1.65rem);
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .calm-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .calm-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .calm-portfolio {
+    padding: 1.25rem;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .calm-grid {
+    grid-template-columns: 1fr;
+  }
+}
