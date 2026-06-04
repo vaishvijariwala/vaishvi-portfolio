@@ -1,16 +1,43 @@
 @import "tailwindcss";
 
+/* Tokens for exported portfolio.css / home.css (Figma nextjs-output) */
+:root {
+  --bg: #f5f5f0;
+  --fg: #000000;
+  --muted: rgba(0, 0, 0, 0.45);
+  --border: rgba(0, 0, 0, 0.15);
+  --purple: #ab5eef;
+  --wine-bg: #b24747;
+  --wine-cream: #f5f5df;
+  --citybin-cream: #f5f5df;
+  --nav-h: 88px;
+}
+
 @theme inline {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
   --color-primary: #2563eb;
-  --color-background: #f7f7f5;
+  --color-background: #f7f7f2;
   --color-foreground: #111111;
   --color-accent: #111111;
   --color-dark: #0b0b0b;
   --color-dark-card: #151515;
   --color-muted: #5f5f5f;
   --color-border: #d4d4cf;
+  /* Portfolio (Figma V1) */
+  --color-portfolio-bg: #f7f7f2;
+  --color-portfolio-ink: #1a1a1a;
+  /* Logo / UI purple (Figma) */
+  --color-portfolio-accent: #ab5eef;
+  /* Hand-drawn wordmark + wavy underline (periwinkle) */
+  --color-portfolio-wavy: #a5a5ff;
+  --color-portfolio-muted: #5c5c5c;
+  --color-portfolio-soft: #8a8a85;
+  --radius-portfolio: 22px;
+  --shadow-portfolio-card: 0 1px 0 rgb(255 255 255 / 0.85) inset,
+    0 4px 24px rgb(0 0 0 / 0.05), 0 16px 40px rgb(0 0 0 / 0.04);
+  --shadow-portfolio-hero: 0 1px 0 rgb(255 255 255 / 0.5) inset,
+    0 2px 4px rgb(0 0 0 / 0.03), 0 20px 48px rgb(0 0 0 / 0.08);
 }
 
 html {
@@ -19,13 +46,13 @@ html {
 }
 
 body {
-  background: #fdfbf3;
-  color: var(--color-foreground);
+  background: var(--bg);
+  color: var(--fg);
 }
 
 ::selection {
-  background: var(--color-foreground);
-  color: var(--color-background);
+  background: color-mix(in srgb, var(--color-portfolio-accent) 22%, white);
+  color: var(--color-portfolio-ink);
 }
 
 @keyframes marquee {

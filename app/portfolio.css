@@ -1,0 +1,149 @@
+/* ─────────────────────────────────────────────
+   portfolio.css — shared layout + nav + footer
+───────────────────────────────────────────── */
+
+/* ── NAV ── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: var(--bg);
+  height: var(--nav-h);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 60px;
+  border-bottom: none;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  gap: 56px;
+  align-items: center;
+}
+
+.nav-right { justify-content: flex-end; }
+
+.nav-link {
+  font-family: var(--font-inter);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.nav-link:hover { opacity: 0.55; }
+.nav-link.active { opacity: 1; }
+
+.nav-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-logo img {
+  height: 56px;
+  width: auto;
+}
+
+/* ── PAGE WRAPPER ── */
+.page {
+  background: var(--bg);
+  min-height: 100vh;
+  padding-top: var(--nav-h);
+}
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 4px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 64px;
+  height: 162px;
+}
+
+.footer-cta {
+  font-family: var(--font-inter);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.020em;
+  color: var(--purple);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.footer-cta:hover { opacity: 0.7; }
+
+.footer-socials {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.footer-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  transition: border-color 0.15s, opacity 0.15s;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.footer-social-link:hover { opacity: 0.6; }
+
+/* ── BACK LINK (case studies) ── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  transition: opacity 0.15s;
+}
+.back-link:hover { opacity: 0.55; }
+
+/* ── PROJECT BUTTON ── */
+.project-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--fg);
+  color: var(--bg);
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.005em;
+  border: none;
+  cursor: pointer;
+  width: fit-content;
+  transition: opacity 0.15s;
+  text-decoration: none;
+}
+.project-btn:hover { opacity: 0.82; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .nav { padding: 0 24px; }
+  .footer { padding: 0 24px; }
+}
+@media (max-width: 640px) {
+  .nav {
+    grid-template-columns: 1fr auto;
+    gap: 0;
+  }
+  .nav-right { display: none; }
+}
