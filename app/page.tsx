@@ -11,7 +11,7 @@ const ALL_PROJECTS = [
     id: "winewright",
     label: "Wine Wright—An app for wine enthusiasts",
     href: "/winewright",
-    image: "/images/winewrightprototype.jpg",
+    image: "/Users/vaishvijariwala/vaishvi-portfolio/public/images/winewrightprototype.png",
     imageAlt: "WineWright app screens",
     external: false,
   },
@@ -19,7 +19,7 @@ const ALL_PROJECTS = [
     id: "citybinsentinel",
     label: "CityBin Sentinel—Smart waste management",
     href: "/citybinsentinel",
-    image: "/images/citybinsentinel-hero.png",
+    image: "/Users/vaishvijariwala/vaishvi-portfolio/public/images/citybinsentinel-hero.png",
     imageAlt: "CityBin Sentinel design",
     external: false,
   },
@@ -35,7 +35,7 @@ const ALL_PROJECTS = [
     id: "fluor",
     label: "Various Projects—Fluor Internships",
     href: null,
-    image: "/images/fluor-hero.png",
+    image: "/Users/vaishvijariwala/vaishvi-portfolio/public/images/fluor.png",
     imageAlt: "Fluor internship projects",
     external: false,
   },
@@ -175,7 +175,7 @@ export default function Home() {
       <section className="hero" ref={heroRef}>
         <div className="hero-photo-wrap" ref={photoRef}>
           <Image
-            src="/images/vaishvi-photo.jpg"
+            src="/Users/vaishvijariwala/vaishvi-portfolio/public/images/profilepicture.jpg"
             alt="Vaishvi Jariwala"
             width={187}
             height={280}
