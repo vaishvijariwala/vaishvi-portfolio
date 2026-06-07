@@ -43,6 +43,7 @@ export const metadata: Metadata = {
     creator: "@vaishvi222",
   },
   robots: { index: true, follow: true },
+  verification: { google: "4dW93Z1d-IoEuYzFozEsIwb8BbJ_g2x6y_1xskkB1Cs" },
   icons: {
     icon: [{ url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" }],
   },
