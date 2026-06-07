@@ -1,629 +1,206 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useInView,
-  AnimatePresence,
-} from "framer-motion";
-import { Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef } from "react";
+import "./portfolio.css";
+import "./home.css";
 
-/* ─────────────── DATA ─────────────── */
-
-const PROJECTS = [
+const ALL_PROJECTS = [
   {
-    title: "MD/SA Analytics Platform",
-    org: "Fluor Corporation",
-    year: "2024",
-    skills: ["Spring Boot", "REST APIs", "Frontend", "Prototyping"],
+    id: "winewright",
+    label: "Wine Wright—An app for wine enthusiasts",
+    href: "/winewright",
+    image: "/images/winewrightprototype.png",
+    imageAlt: "WineWright app screens",
+    external: false,
   },
   {
-    title: "International Supplier Base: Market Entry Analysis",
-    org: "Fluor Corporation",
-    year: "2025",
-    skills: ["Data Analysis", "Financial Modeling", "Stakeholder Research"],
+    id: "citybinsentinel",
+    label: "CityBin Sentinel—Smart waste management",
+    href: "/citybinsentinel",
+    image: "/images/citybinsentinel-hero.png",
+    imageAlt: "CityBin Sentinel design",
+    external: false,
   },
   {
-    title: "Biomedical Data Infrastructure for NIH Repositories",
-    org: "Dept. of Biomedical Informatics (SBU)",
-    year: "2024",
-    skills: ["APIs", "Web Apps", "Data Viz"],
+    id: "ascii",
+    label: "Coding Ascii Art—Pj5",
+    href: "https://github.com/vaishvijariwala/asciiVideo",
+    image: "/images/ascii-hero.png",
+    imageAlt: "ASCII art coding project",
+    external: true,
   },
   {
-    title: "Regression & Pipelines",
-    org: "Personal Research",
-    year: "2023\u201324",
-    skills: ["R", "Python", "ETL", "Modeling"],
+    id: "fluor",
+    label: "Various Projects—Fluor Internships",
+    href: null,
+    image: "/images/fluor.png",
+    imageAlt: "Fluor internship projects",
+    external: false,
   },
 ];
 
-const TICKER_ITEMS = [
-  "Fluor Corporation",
-  "Dept. of Biomedical Informatics",
-  "Dept. of Applied Math & Stats",
-  "Wang Center",
-  "Stony Brook University",
-];
-
-const LINKS = {
-  email: "mailto:vaishvijariwala03@gmail.com",
-  github: "https://github.com/vaishvijariwala",
-  linkedin: "https://www.linkedin.com/in/vaishvi-jariwala",
-};
-
-const SKILLS_DATA = [
-  { label: "Languages", value: "Python, Java, R, SQL, TypeScript, HTML/CSS" },
-  { label: "Frameworks", value: "Spring Boot, React, Next.js, RESTful APIs" },
-  { label: "Tools", value: "Git, VS Code, Bash/Zsh, ETL Pipelines, Data Viz" },
-];
-
-/* ─────────────── HELPERS ─────────────── */
-
-function FadeUp({
-  children,
-  delay = 0,
-  className = "",
-}: {
-  children: ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
-      className={className}
-    >
-      {children}
-    </motion.div>
+function GridCell({ label, href, image, imageAlt, external }: (typeof ALL_PROJECTS)[0]) {
+  const inner = (
+    <>
+      <div className="grid-cell-image">
+        <Image
+          src={image}
+          alt={imageAlt}
+          fill
+          className="grid-cell-img"
+          sizes="(max-width: 900px) 100vw, 50vw"
+        />
+      </div>
+      <p className="grid-cell-label">{label}</p>
+    </>
   );
-}
 
-/* ─────────────── CUSTOM CURSOR ─────────────── */
-
-function CustomCursor() {
-  const cursorX = useSpring(0, { stiffness: 300, damping: 30 });
-  const cursorY = useSpring(0, { stiffness: 300, damping: 30 });
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const move = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
-      setVisible(true);
-    };
-    const leave = () => setVisible(false);
-    const enter = () => setVisible(true);
-
-    window.addEventListener("mousemove", move);
-    document.addEventListener("mouseleave", leave);
-    document.addEventListener("mouseenter", enter);
-    return () => {
-      window.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseleave", leave);
-      document.removeEventListener("mouseenter", enter);
-    };
-  }, [cursorX, cursorY]);
-
-  return (
-    <motion.div
-      className="pointer-events-none fixed top-0 left-0 z-[9999] hidden md:block"
-      style={{
-        x: cursorX,
-        y: cursorY,
-        translateX: "-50%",
-        translateY: "-50%",
-      }}
-    >
-      <AnimatePresence>
-        {visible && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            className="h-5 w-5 rounded-full border-2 border-foreground mix-blend-difference"
-            style={{ background: "white" }}
-          />
-        )}
-      </AnimatePresence>
-    </motion.div>
+  if (!href) return <div className="grid-cell">{inner}</div>;
+  if (external) return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="grid-cell">{inner}</a>
   );
+  return <Link href={href} className="grid-cell">{inner}</Link>;
 }
-
-/* ─────────────── NAV ─────────────── */
 
 function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handler, { passive: true });
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
-
   return (
-    <motion.nav
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-background/70 backdrop-blur-xl border-b border-border"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
-        <span className="text-lg font-extrabold tracking-tight">VJ</span>
-        <span className="hidden text-sm font-medium tracking-wide text-muted sm:block">
-          Designer &middot; Engineer
-        </span>
-        <div className="flex items-center gap-6 text-sm font-medium">
-          {["Work", "Play", "Info"].map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
-              className="group relative py-1"
-            >
-              {link}
-              <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-accent transition-all duration-300 group-hover:w-full" />
-            </a>
-          ))}
-        </div>
+    <header className="nav">
+      <div className="nav-left">
+        <Link href="/#projects" className="nav-link">Projects</Link>
+        <Link href="/contact" className="nav-link">Contacts</Link>
       </div>
-    </motion.nav>
-  );
-}
-
-/* ─────────────── HERO ─────────────── */
-
-function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.5], [0, -80]);
-
-  const heroText =
-    "Vaishvi is a design-savvy engineer who builds systems and stories that make data, products, and brands easier to understand.";
-  const words = heroText.split(" ");
-
-  return (
-    <motion.header
-      ref={ref}
-      style={{ opacity, y }}
-      className="relative mx-auto max-w-7xl px-6 pt-32 pb-16 lg:px-10 lg:pt-40 lg:pb-20"
-    >
-      <h1 className="text-[clamp(2rem,5vw,5rem)] font-extrabold leading-[1.05] tracking-tight text-balance">
-        {words.map((word, i) => (
-          <motion.span
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.5,
-              ease: [0.22, 1, 0.36, 1],
-              delay: 0.3 + i * 0.04,
-            }}
-            className="inline-block mr-[0.3em]"
-          >
-            {word}
-          </motion.span>
-        ))}
-      </h1>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.2 }}
-        className="mt-8 flex flex-wrap items-center gap-4"
-      >
-        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-4 py-2 text-sm font-medium backdrop-blur-sm">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
-          </span>
-          Available for roles in NYC
-        </span>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.4 }}
-        className="mt-6 flex flex-wrap items-center gap-4"
-      >
+      <div className="nav-logo">
+        <Link href="/" aria-label="Home" className="vai-logo-link">
+          <Image
+            src="/images/logo.png"
+            alt="vai"
+            width={387}
+            height={125}
+            priority
+            className="vai-logo h-14 w-auto"
+          />
+        </Link>
+      </div>
+      <div className="nav-right">
         <a
-          href="#work"
-          className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background transition-transform duration-200 hover:scale-105"
-        >
-          See the work
-          <ArrowUpRight className="h-4 w-4" />
-        </a>
-        <a
-          href={LINKS.github}
+          href="https://drive.google.com/file/d/1T1JTg3ZAW5jkzOWmpk2zW_THGYvU2m5L/view?usp=sharing"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
+          className="nav-link"
         >
-          <Github className="h-4 w-4" /> GitHub
+          Resume
         </a>
-        <a
-          href={LINKS.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
-        >
-          <Linkedin className="h-4 w-4" /> LinkedIn
-        </a>
-        <a
-          href={LINKS.email}
-          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
-        >
-          <Mail className="h-4 w-4" /> Email
-        </a>
-      </motion.div>
-    </motion.header>
-  );
-}
-
-/* ─────────────── TICKER ─────────────── */
-
-function Ticker() {
-  const items = [...TICKER_ITEMS, ...TICKER_ITEMS];
-
-  return (
-    <FadeUp>
-      <div className="border-y border-border overflow-hidden py-5">
-        <div className="animate-marquee flex w-max items-center gap-8 whitespace-nowrap">
-          {items.map((name, i) => (
-            <span key={i} className="flex items-center gap-4 text-sm font-medium text-muted">
-              <span className="text-accent">{"\u2666"}</span>
-              {name}
-            </span>
-          ))}
-          {items.map((name, i) => (
-            <span key={`dup-${i}`} className="flex items-center gap-4 text-sm font-medium text-muted">
-              <span className="text-accent">{"\u2666"}</span>
-              {name}
-            </span>
-          ))}
-        </div>
+        <Link href="/about" className="nav-link">About</Link>
       </div>
-    </FadeUp>
+    </header>
   );
 }
-
-/* ─────────────── PROJECT CARD ─────────────── */
-
-function ProjectCard({
-  project,
-  index,
-}: {
-  project: (typeof PROJECTS)[0];
-  index: number;
-}) {
-  return (
-    <FadeUp delay={index * 0.1}>
-      <div className="group relative rounded-2xl border border-border bg-background p-8 transition-all duration-350 ease-out hover:border-transparent hover:bg-dark-card">
-        <div className="flex items-start justify-between">
-          <div>
-            <h3 className="text-xl font-bold leading-snug tracking-tight transition-colors duration-350 group-hover:text-accent">
-              {project.title}
-            </h3>
-            <p className="mt-1 text-sm text-muted transition-colors duration-350 group-hover:text-background/60">
-              {project.org} &middot; {project.year}
-            </p>
-          </div>
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border transition-all duration-350 group-hover:border-accent group-hover:bg-accent/10">
-            <ArrowUpRight className="h-4 w-4 transition-transform duration-350 group-hover:rotate-45 group-hover:text-accent" />
-          </div>
-        </div>
-        <div className="mt-6 flex flex-wrap gap-2">
-          {project.skills.map((s) => (
-            <span
-              key={s}
-              className="rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors duration-350 group-hover:border-background/20 group-hover:text-background/80"
-            >
-              {s}
-            </span>
-          ))}
-        </div>
-      </div>
-    </FadeUp>
-  );
-}
-
-/* ─────────────── SELECTED WORK ─────────────── */
-
-function SelectedWork() {
-  return (
-    <section id="work" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-      <FadeUp>
-        <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-          Selected Work
-        </h2>
-      </FadeUp>
-      <div className="mt-12 grid gap-6 md:grid-cols-2">
-        {PROJECTS.map((p, i) => (
-          <ProjectCard key={p.title} project={p} index={i} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────── PLAY / EXPERIMENTS ─────────────── */
-
-function Experiments() {
-  return (
-    <section id="play" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-      <FadeUp>
-        <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-          Experiments
-        </h2>
-      </FadeUp>
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3].map((n) => (
-          <FadeUp key={n} delay={n * 0.1}>
-            <motion.div
-              whileHover={{
-                rotate: [0, -1, 1, -0.5, 0],
-                transition: { duration: 0.5, type: "spring" },
-              }}
-              className="flex aspect-[4/3] items-center justify-center rounded-2xl border-2 border-dashed border-border"
-            >
-              <span className="text-sm font-medium text-muted">
-                {"Coming soon \u2726"}
-              </span>
-            </motion.div>
-          </FadeUp>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────── INFO / ABOUT ─────────────── */
-
-function Info() {
-  return (
-    <section id="info" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-      <div className="grid gap-12 lg:grid-cols-5">
-        {/* Bio - 3 columns */}
-        <div className="lg:col-span-3">
-          <FadeUp>
-            <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-              About
-            </h2>
-          </FadeUp>
-          <FadeUp delay={0.1}>
-            <p className="mt-6 text-lg leading-relaxed text-muted">
-              Graduate of Stony Brook University (Technological Systems
-              Management, CS + Applied Math & Stats). I enjoy fast iterations,
-              clean interfaces, and the boring-but-essential parts of
-              engineering.
-            </p>
-          </FadeUp>
-
-          <FadeUp delay={0.2}>
-            <div className="mt-10 space-y-4">
-              {SKILLS_DATA.map((item) => (
-                <div
-                  key={item.label}
-                  className="flex flex-col gap-1 border-b border-border pb-4 sm:flex-row sm:gap-6"
-                >
-                  <span className="w-28 shrink-0 text-sm font-bold uppercase tracking-wider">
-                    {item.label}
-                  </span>
-                  <span className="text-sm leading-relaxed text-muted">
-                    {item.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </FadeUp>
-        </div>
-
-        {/* Sidebar - 2 columns */}
-        <div className="flex flex-col gap-6 lg:col-span-2">
-          <FadeUp delay={0.3}>
-            <div className="rounded-2xl border border-border bg-background/60 p-6 backdrop-blur-sm">
-              <h3 className="text-sm font-bold uppercase tracking-wider">
-                Currently
-              </h3>
-              <ul className="mt-4 space-y-3">
-                {[
-                  "Summer intern at Fluor (Supply Chain & Strategy)",
-                  "Practicing deeper coding (beyond LeetCode)",
-                  "Exploring ML + product systems projects",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-muted">
-                    <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </FadeUp>
-
-          <FadeUp delay={0.4}>
-            <div className="rounded-2xl border border-border bg-background/60 p-6 backdrop-blur-sm">
-              <h3 className="text-sm font-bold uppercase tracking-wider">
-                Looking for
-              </h3>
-              <ul className="mt-4 space-y-3">
-                {[
-                  "Full-time roles in NYC",
-                  "Mentors in ML/product design",
-                  "Collaborators on interesting projects",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-muted">
-                    <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </FadeUp>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────── FOOTER ─────────────── */
 
 function Footer() {
   return (
-    <footer className="bg-dark text-background">
-      <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <FadeUp>
-          <h2 className="text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[1.05] tracking-tight text-balance">
-            {"Let\u2019s build something"}
-            <br />
-            <span className="text-accent">worth remembering.</span>
-          </h2>
-        </FadeUp>
-
-        <FadeUp delay={0.15}>
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a
-              href={LINKS.email}
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition-transform duration-200 hover:scale-105"
-            >
-              <Mail className="h-4 w-4" /> Get in touch
-            </a>
-            <a
-              href={LINKS.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-background/20 px-5 py-3 text-sm font-medium text-background/80 transition-colors hover:border-background/40 hover:text-background"
-            >
-              <Github className="h-4 w-4" /> GitHub
-            </a>
-            <a
-              href={LINKS.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-background/20 px-5 py-3 text-sm font-medium text-background/80 transition-colors hover:border-background/40 hover:text-background"
-            >
-              <Linkedin className="h-4 w-4" /> LinkedIn
-            </a>
-          </div>
-        </FadeUp>
-
-        <FadeUp delay={0.25}>
-          <div className="mt-20 grid gap-10 border-t border-background/10 pt-12 sm:grid-cols-2 lg:grid-cols-4">
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
-                Location
-              </h4>
-              <p className="mt-3 text-sm text-background/70">
-                New York City
-                <br />
-                Often in Houston
-              </p>
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
-                Explore
-              </h4>
-              <ul className="mt-3 space-y-2 text-sm">
-                {["Work", "Play", "Info"].map((link) => (
-                  <li key={link}>
-                    <a
-                      href={`#${link.toLowerCase()}`}
-                      className="text-background/70 transition-colors hover:text-background"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
-                Education
-              </h4>
-              <p className="mt-3 text-sm text-background/70">
-                BS, Technological Systems Management
-                <br />
-                CS + Applied Math & Stats
-                <br />
-                Stony Brook University
-              </p>
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
-                Contact
-              </h4>
-              <ul className="mt-3 space-y-2 text-sm">
-                <li>
-                  <a
-                    href={LINKS.email}
-                    className="text-background/70 transition-colors hover:text-background"
-                  >
-                    vaishvijariwala03@gmail.com
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={LINKS.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-background/70 transition-colors hover:text-background"
-                  >
-                    LinkedIn
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={LINKS.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-background/70 transition-colors hover:text-background"
-                  >
-                    GitHub
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </FadeUp>
-
-        <div className="mt-12 text-xs text-background/30">
-          &copy; {new Date().getFullYear()} Vaishvi Jariwala
-        </div>
-      </div>
+    <footer className="footer">
+      <p className="footer-cta">If you have scrolled this far, it means you should hire me.</p>
+      <nav className="footer-socials" aria-label="Social links">
+        <a href="https://www.linkedin.com/in/vaishvi-jariwala/" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="LinkedIn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+            <path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V9h3v10zM6.5 7.73C5.5 7.73 4.75 6.97 4.75 6S5.5 4.27 6.5 4.27 8.25 5.03 8.25 6 7.5 7.73 6.5 7.73zM20 19h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.88 0-2.17 1.46-2.17 2.97V19h-3V9h2.88v1.36h.04c.4-.76 1.38-1.56 2.84-1.56 3.04 0 3.6 2 3.6 4.6V19z"/>
+          </svg>
+        </a>
+        <a href="mailto:vaishvijariwala03@gmail.com" className="footer-social-link" aria-label="Email">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/>
+          </svg>
+        </a>
+        <a href="https://github.com/vaishvijariwala" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="GitHub">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+          </svg>
+        </a>
+        <a href="https://x.com/vaishvi222" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Twitter / X">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+      </nav>
     </footer>
   );
 }
 
-/* ─────────────── PAGE ─────────────── */
+export default function Home() {
+  const heroRef = useRef<HTMLElement>(null);
+  const photoRef = useRef<HTMLDivElement>(null);
 
-export default function Portfolio() {
+  /* Scroll parallax + fade for hero */
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (heroRef.current) {
+        const opacity = Math.max(0, 1 - y / 480);
+        const nudge = y * 0.18;
+        heroRef.current.style.opacity = String(opacity);
+        heroRef.current.style.transform = `translateY(${nudge}px)`;
+      }
+      if (photoRef.current) {
+        photoRef.current.style.transform = `translateY(${y * 0.12}px)`;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  /* Stagger-in grid cells on scroll */
+  useEffect(() => {
+    const cells = document.querySelectorAll<HTMLElement>(".grid-cell");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            (e.target as HTMLElement).classList.add("grid-cell--visible");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    cells.forEach((c) => io.observe(c));
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <>
-      <CustomCursor />
+    <div className="page">
       <Nav />
-      <main>
-        <Hero />
-        <Ticker />
-        <SelectedWork />
-        <Experiments />
-        <Info />
+
+      <section className="hero" ref={heroRef}>
+        <div className="hero-photo-wrap" ref={photoRef}>
+          <Image
+            src="/images/profilepicture.jpg"
+            alt="Vaishvi Jariwala"
+            width={187}
+            height={280}
+            className="hero-photo"
+            priority
+          />
+        </div>
+        <p className="hero-bio">
+          vaishvi jariwala is a{" "}
+          <span className="design-engineer">design engineer</span>
+          {" → a storyteller passionate about creative ai technology currently studying ui/ux specialisation @"}
+          <a href="https://www.coursera.org/specializations/ui-ux-design" target="_blank" rel="noopener noreferrer" className="hero-bio-link">calarts</a>
+          {" while exploring all things creative previously @"}
+          <a href="https://www.fluor.com/" target="_blank" rel="noopener noreferrer" className="hero-bio-link">fluor</a>
+        </p>
+        <p className="hero-cta">Explore my projects below ↓</p>
+      </section>
+
+      <main id="projects" className="project-grid">
+        {ALL_PROJECTS.map((p) => (
+          <GridCell key={p.id} {...p} />
+        ))}
       </main>
+
       <Footer />
-    </>
+    </div>
   );
 }

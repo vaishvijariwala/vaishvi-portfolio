@@ -1,0 +1,64 @@
+/* ─────────────────────────────────────────────
+   about.css — about page styles
+───────────────────────────────────────────── */
+
+.about-page {
+  background: var(--bg);
+  min-height: 100vh;
+  padding-top: var(--nav-h);
+}
+
+/* ── MAIN CONTENT ── */
+.about-main {
+  padding-top: 60px;
+  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+  max-width: 1274px;
+  margin: 0 auto;
+  padding-left: 64px;
+  padding-right: 64px;
+}
+
+/* All text blocks share the same style */
+.about-text {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(36px, 5.5vw, 64px);
+  line-height: 1.2;
+  letter-spacing: -0.020em;
+  color: #ab5eef;
+  text-align: center;
+  max-width: 976px;
+  width: 100%;
+  margin: 0;
+}
+
+/* Photo frames */
+.about-photo-wrap {
+  width: 490px;
+  max-width: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.about-photo-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .about-main {
+    padding-left: 24px;
+    padding-right: 24px;
+    gap: 48px;
+  }
+  .about-photo-wrap {
+    width: 100%;
+  }
+}

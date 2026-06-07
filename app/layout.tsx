@@ -1,46 +1,40 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-import { Inter } from 'next/font/google'
-
-const inter = Inter({ 
-  subsets: ['latin'],
-  display: 'swap', // Improves loading performance
-})
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'vaishvi jariwala',
-  jobTitle: 'Software Engineer',
-  description: 'Design-savvy engineer specializing in prototype-to-production development',
-  url: 'https://github.com/vaishvijariwala/vaishvi-portfolio.git',
-  sameAs: [
-    'https://linkedin.com/in/vaishvi-jariwala',
-    'https://github.com/vaishvijariwala'
-  ]
-}
-
-const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
-  title: "vaishvi jariwala",
-  description: "Portfolio",
+  title: "Vaishvi Jariwala — Design engineer & storyteller",
+  description:
+    "Design engineer and storyteller passionate about creative AI, UI/UX at CalArts, previously at Fluor — portfolio and selected projects.",
+  icons: {
+    icon: [{ url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" }],
+  },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const viewport: Viewport = {
+  themeColor: "#f5f5f0",
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: ReactNode;
+}>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin ="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet"/>
-      </head>
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className= "antialiased bg-[#fde7ee] text-black selection:bg-black selection:text-white"
-        style={{ fontFamily: '"Plus Jakarta Sans", sans-serif', fontOpticalSizing: "auto" }}
+        className={`${inter.className} ${inter.variable} antialiased`}
+        suppressHydrationWarning
       >
         {children}
       </body>

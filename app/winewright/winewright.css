@@ -1,0 +1,351 @@
+/* ─────────────────────────────────────────────
+   winewright.css — WineWright case study styles
+───────────────────────────────────────────── */
+
+.ww-page {
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+/* ── HERO ── */
+.ww-hero {
+  background: #b24b47;
+  min-height: 898px;
+  position: relative;
+  padding: 0 72px 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ww-hero-topnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 49px 8px 0;
+}
+
+.ww-topnav-link {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #000;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.ww-topnav-link:hover { opacity: 0.6; }
+
+.ww-hero-title {
+  font-family: "BBH Hegarty", "Georgia", serif;
+  font-size: clamp(80px, 12vw, 150px);
+  line-height: 0.8;
+  letter-spacing: -0.005em;
+  color: #f5f5df;
+  text-align: center;
+  margin: 0;
+  padding: 80px 0 0;
+  position: relative;
+  z-index: 2;
+}
+
+.ww-hero-mockup {
+  position: absolute;
+  left: 50%;
+  top: 204px;
+  transform: translateX(-50%);
+  width: 637px;
+  height: 358px;
+  border-radius: 50px;
+  overflow: hidden;
+  z-index: 3;
+  mix-blend-mode: hard-light;
+}
+
+.ww-hero-bottom {
+  margin-top: auto;
+  padding-top: 420px;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 48px;
+  align-items: start;
+  position: relative;
+  z-index: 4;
+}
+
+.ww-hero-meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 12px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  color: #f5f5df;
+  line-height: 1.45;
+}
+.ww-hero-meta dt {
+  font-weight: 100;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding-top: 2px;
+  white-space: nowrap;
+}
+.ww-hero-meta dd { margin: 0 0 8px; font-weight: 400; }
+
+.ww-hero-desc {
+  font-family: "BBH Hegarty", "Georgia", serif;
+  font-size: 24px;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+  color: #f5f5f0;
+}
+
+.ww-hero-cta-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+  position: relative;
+  z-index: 4;
+}
+
+.ww-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #f5f5f0;
+  color: #000;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  transition: opacity 0.15s;
+  width: 211px;
+}
+.ww-explore-btn:hover { opacity: 0.82; }
+
+/* ── CONTENT SECTIONS ── */
+.ww-section {
+  padding: 80px 270px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.ww-section-label {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.45;
+  letter-spacing: 0.008em;
+  color: rgb(116, 116, 104);
+  text-transform: capitalize;
+  margin: 0 0 16px;
+}
+.ww-section + .ww-section .ww-section-label:first-child,
+.ww-section-label + .ww-section-label { margin-top: 64px; }
+
+.ww-section-intro {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  margin: 0 0 32px;
+}
+
+.ww-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.ww-section-body p {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  margin: 0;
+}
+.ww-section-body ul {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ww-section-body li {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+}
+
+/* red highlight spans */
+.ww-highlight { color: #f46767; }
+
+/* ── CENTER IMAGE ── */
+.ww-center-img {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px 0;
+}
+.ww-img { display: block; max-width: 100%; height: auto; }
+
+.ww-caption {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-style: italic;
+  text-align: center;
+  color: rgb(116, 116, 104);
+  margin-top: 12px;
+  letter-spacing: -0.005em;
+}
+
+/* ── PERSONA CARDS ── */
+.ww-persona-card {
+  background: rgb(237, 237, 195);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  padding: 28px 32px 28px 120px;
+  margin: 32px 0;
+  position: relative;
+  min-height: 100px;
+}
+
+.ww-persona-img-wrap {
+  position: absolute;
+  left: -40px;
+  top: -20px;
+  width: 148px;
+}
+.ww-persona-img-wrap--alex { width: 104px; }
+
+.ww-persona-img { display: block; width: 100%; height: auto; }
+
+.ww-persona-text {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  margin: 0;
+}
+
+/* ── PULLQUOTE ── */
+.ww-pullquote-wrap {
+  position: relative;
+  margin: 48px 0 0;
+}
+
+.ww-pullquote-card {
+  background: rgb(255, 228, 86);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 40px;
+  padding: 32px 64px;
+  margin: 0 -20px;
+}
+
+.ww-pullquote-text {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: 0.03em;
+  color: var(--fg);
+  margin: 0;
+  text-align: center;
+}
+
+.ww-quote-mark {
+  font-family: "BBH Hegarty", "Georgia", serif;
+  font-size: 160px;
+  line-height: 0.8;
+  color: rgb(116, 116, 104);
+  position: absolute;
+  pointer-events: none;
+}
+.ww-quote-mark--open { left: -24px; top: -24px; }
+.ww-quote-mark--close { right: -24px; bottom: -32px; transform: rotate(180deg); }
+
+/* ── NOTE CARD ── */
+.ww-note-card {
+  background: rgb(255, 228, 86);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 40px;
+  padding: 32px 48px;
+  margin: 24px 0 40px;
+}
+
+.ww-note-text {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.55;
+  letter-spacing: 0.03em;
+  color: #1b1b1b;
+  margin: 0;
+}
+
+/* ── SCREENS GRID ── */
+.ww-screens-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 0 0 48px;
+}
+.ww-screen-img-wrap { overflow: hidden; }
+
+/* ── PROTOTYPE ── */
+.ww-prototype-wrap {
+  margin: 24px 0 8px;
+  overflow: hidden;
+}
+
+/* ── FEEDBACK / EMAIL ── */
+.ww-feedback-link {
+  margin-top: 48px;
+}
+
+.ww-wavy-link {
+  color: rgb(116, 116, 104);
+  text-decoration: underline wavy #b24747;
+  text-decoration-thickness: 2px;
+  font-style: italic;
+}
+.ww-wavy-link:hover { opacity: 0.7; }
+
+/* ── BOTTOM NAV ── */
+.ww-bottom-nav {
+  display: flex;
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.ww-btn-outline {
+  background: transparent !important;
+  color: var(--fg) !important;
+  border: 1.5px solid var(--fg) !important;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .ww-section { padding: 64px 120px; }
+}
+@media (max-width: 900px) {
+  .ww-hero { padding: 0 24px 60px; min-height: auto; }
+  .ww-hero-title { font-size: 60px; padding-top: 48px; }
+  .ww-hero-mockup {
+    position: relative; top: auto; left: auto;
+    transform: none; width: 100%; height: 220px;
+    margin: 24px 0; border-radius: 24px;
+  }
+  .ww-hero-bottom {
+    grid-template-columns: 1fr; gap: 24px; padding-top: 0;
+  }
+  .ww-section { padding: 48px 24px; }
+  .ww-screens-grid { grid-template-columns: 1fr; }
+  .ww-persona-card { padding-left: 24px; }
+  .ww-persona-img-wrap { position: relative; left: auto; top: auto; margin-bottom: 16px; }
+}
