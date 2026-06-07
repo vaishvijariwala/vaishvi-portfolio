@@ -1,0 +1,16 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+  color: #0f0;
+  font-family: monospace;
+}
+#ascii-container {
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  font-size: 8px;
+}

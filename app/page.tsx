@@ -1,57 +1,51 @@
-import React from "react";
-import { ArrowRight, Github, Linkedin, Mail, ExternalLink, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
 
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useInView,
+  AnimatePresence,
+} from "framer-motion";
+import { Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
 
-/**
- * One-file React portfolio inspired by the two screenshots the user shared:
- *  - Conversational hero with big type (Andrew-style)
- *  - Friendly, graphic footer message (Pop Up Grocer-style)
- * Tailwind is assumed available by the host environment. shadcn/ui is used for buttons/cards.
- *
- * Replace any copy or project data below without touching layout.
- */
+/* ─────────────── DATA ─────────────── */
 
 const PROJECTS = [
   {
-    title: "MD/SA Analytics Platform — Frontend Redesign & APIs",
+    title: "MD/SA Analytics Platform",
     org: "Fluor Corporation",
     year: "2024",
-    blurb:
-      "Led rapid prototyping and shipped production modules for an enterprise analytics platform. Built RESTful APIs with Spring Boot and orchestrated data flows; delivered a full front‑end refresh that boosted engagement.",
     skills: ["Spring Boot", "REST APIs", "Frontend", "Prototyping"],
-    links: [
-      { label: "Notes", href: "#" },
-    ],
   },
   {
     title: "International Supplier Base: Market Entry Analysis",
     org: "Fluor Corporation",
     year: "2025",
-    blurb:
-      "Interviewed stakeholders across functions, modeled scenarios, and pinpointed optimization opportunities for international market entry in energy/nuclear supply chains.",
     skills: ["Data Analysis", "Financial Modeling", "Stakeholder Research"],
-    links: [{ label: "Overview", href: "#" }],
   },
   {
     title: "Biomedical Data Infrastructure for NIH Repositories",
     org: "Dept. of Biomedical Informatics (SBU)",
     year: "2024",
-    blurb:
-      "Built APIs and web apps that improved access to genomic + EHR datasets under Prof. Richard Moffitt; delivered visualization tooling for researchers.",
     skills: ["APIs", "Web Apps", "Data Viz"],
-    links: [{ label: "Abstract", href: "#" }],
   },
   {
-    title: "Regression & Pipelines — R/Python",
+    title: "Regression & Pipelines",
     org: "Personal Research",
-    year: "2023—24",
-    blurb:
-      "End‑to‑end analysis: imputation, linear models, feature significance across 24 variables; built reusable ETL/pipeline utilities.",
+    year: "2023\u201324",
     skills: ["R", "Python", "ETL", "Modeling"],
-    links: [{ label: "Repo", href: "#" }],
   },
+];
+
+const TICKER_ITEMS = [
+  "Fluor Corporation",
+  "Dept. of Biomedical Informatics",
+  "Dept. of Applied Math & Stats",
+  "Wang Center",
+  "Stony Brook University",
 ];
 
 const LINKS = {
@@ -60,215 +54,576 @@ const LINKS = {
   linkedin: "https://www.linkedin.com/in/vaishvi-jariwala",
 };
 
-export default function Portfolio() {
+const SKILLS_DATA = [
+  { label: "Languages", value: "Python, Java, R, SQL, TypeScript, HTML/CSS" },
+  { label: "Frameworks", value: "Spring Boot, React, Next.js, RESTful APIs" },
+  { label: "Tools", value: "Git, VS Code, Bash/Zsh, ETL Pipelines, Data Viz" },
+];
+
+/* ─────────────── HELPERS ─────────────── */
+
+function FadeUp({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+
   return (
-    <div id="top" className="$1">
-      {/* Top strip */}
-      <div className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-[#fde7ee]/80 border-b border-black/10">
-        <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between text-sm">
-          <div className="flex items-center gap-2"><span className="uppercase tracking-widest">Designer · Engineer</span><span className="h-1 w-1 rounded-full bg-black/60"/></div>
-          <a href="#top" className="font-medium hover:underline">Vaishvi Jariwala</a>
-          <nav className="flex items-center gap-6">
-            <a href="#work" className="hover:underline">Work</a>
-            <a href="#play" className="hover:underline">Play</a>
-            <a href="#info" className="hover:underline">Info</a>
-          </nav>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ─────────────── CUSTOM CURSOR ─────────────── */
+
+function CustomCursor() {
+  const cursorX = useSpring(0, { stiffness: 300, damping: 30 });
+  const cursorY = useSpring(0, { stiffness: 300, damping: 30 });
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const move = (e: MouseEvent) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
+      setVisible(true);
+    };
+    const leave = () => setVisible(false);
+    const enter = () => setVisible(true);
+
+    window.addEventListener("mousemove", move);
+    document.addEventListener("mouseleave", leave);
+    document.addEventListener("mouseenter", enter);
+    return () => {
+      window.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseleave", leave);
+      document.removeEventListener("mouseenter", enter);
+    };
+  }, [cursorX, cursorY]);
+
+  return (
+    <motion.div
+      className="pointer-events-none fixed top-0 left-0 z-[9999] hidden md:block"
+      style={{
+        x: cursorX,
+        y: cursorY,
+        translateX: "-50%",
+        translateY: "-50%",
+      }}
+    >
+      <AnimatePresence>
+        {visible && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            className="h-5 w-5 rounded-full border-2 border-foreground mix-blend-difference"
+            style={{ background: "white" }}
+          />
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+/* ─────────────── NAV ─────────────── */
+
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  return (
+    <motion.nav
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? "bg-background/70 backdrop-blur-xl border-b border-border"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
+        <span className="text-lg font-extrabold tracking-tight">VJ</span>
+        <span className="hidden text-sm font-medium tracking-wide text-muted sm:block">
+          Designer &middot; Engineer
+        </span>
+        <div className="flex items-center gap-6 text-sm font-medium">
+          {["Work", "Play", "Info"].map((link) => (
+            <a
+              key={link}
+              href={`#${link.toLowerCase()}`}
+              className="group relative py-1"
+            >
+              {link}
+              <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+            </a>
+          ))}
         </div>
       </div>
+    </motion.nav>
+  );
+}
 
-      {/* Hero */}
-      <header className="mx-auto max-w-6xl px-4 pt-16 pb-8">
-        <p className="text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] font-[700] tracking-tight">
-          Vaishvi is a design‑savvy engineer in NYC. She builds systems and stories that
-          make data, products, and brands easier to understand. Her sweet spot is
-          <em className="px-1 rounded bg-black text-white"> prototype‑to‑production</em> — rapid exploration that turns into real, shipped experiences.
-        </p>
-        <div className="mt-6 flex flex-wrap items-center gap-3">
-          <Button asChild className="rounded-2xl px-4">
-            <a href="#work">See the work <ArrowRight className="ml-1 h-4 w-4"/></a>
-          </Button>
-          <a href={LINKS.github} className="inline-flex items-center gap-2 underline decoration-2 underline-offset-2">
-            <Github className="h-4 w-4"/> Github
-          </a>
-          <a href={LINKS.linkedin} className="inline-flex items-center gap-2 underline decoration-2 underline-offset-2">
-            <Linkedin className="h-4 w-4"/> LinkedIn
-          </a>
-          <a href={LINKS.email} className="inline-flex items-center gap-2 underline decoration-2 underline-offset-2">
-            <Mail className="h-4 w-4"/> Email
-          </a>
-        </div>
-      </header>
+/* ─────────────── HERO ─────────────── */
 
-      {/* Client/experience ticker */}
-      <section className="mx-auto max-w-6xl px-4 py-6 border-y border-black/10">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
-          {[
-            "Fluor Corporation",
-            "Dept. of Biomedical Informatics",
-            "Dept. of Applied Math & Stats",
-            "Wang Center",
-            "Stony Brook University",
-          ].map((name) => (
-            <span key={name} className="inline-flex items-center gap-2">
-              <span className="i">•</span><span className="font-medium">{name}</span>
+function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.5], [0, -80]);
+
+  const heroText =
+    "Vaishvi is a design-savvy engineer who builds systems and stories that make data, products, and brands easier to understand.";
+  const words = heroText.split(" ");
+
+  return (
+    <motion.header
+      ref={ref}
+      style={{ opacity, y }}
+      className="relative mx-auto max-w-7xl px-6 pt-32 pb-16 lg:px-10 lg:pt-40 lg:pb-20"
+    >
+      <h1 className="text-[clamp(2rem,5vw,5rem)] font-extrabold leading-[1.05] tracking-tight text-balance">
+        {words.map((word, i) => (
+          <motion.span
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.5,
+              ease: [0.22, 1, 0.36, 1],
+              delay: 0.3 + i * 0.04,
+            }}
+            className="inline-block mr-[0.3em]"
+          >
+            {word}
+          </motion.span>
+        ))}
+      </h1>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.2 }}
+        className="mt-8 flex flex-wrap items-center gap-4"
+      >
+        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-4 py-2 text-sm font-medium backdrop-blur-sm">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
+          </span>
+          Available for roles in NYC
+        </span>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.4 }}
+        className="mt-6 flex flex-wrap items-center gap-4"
+      >
+        <a
+          href="#work"
+          className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background transition-transform duration-200 hover:scale-105"
+        >
+          See the work
+          <ArrowUpRight className="h-4 w-4" />
+        </a>
+        <a
+          href={LINKS.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
+        >
+          <Github className="h-4 w-4" /> GitHub
+        </a>
+        <a
+          href={LINKS.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
+        >
+          <Linkedin className="h-4 w-4" /> LinkedIn
+        </a>
+        <a
+          href={LINKS.email}
+          className="inline-flex items-center gap-2 text-sm font-medium underline decoration-2 underline-offset-4 transition-opacity hover:opacity-60"
+        >
+          <Mail className="h-4 w-4" /> Email
+        </a>
+      </motion.div>
+    </motion.header>
+  );
+}
+
+/* ─────────────── TICKER ─────────────── */
+
+function Ticker() {
+  const items = [...TICKER_ITEMS, ...TICKER_ITEMS];
+
+  return (
+    <FadeUp>
+      <div className="border-y border-border overflow-hidden py-5">
+        <div className="animate-marquee flex w-max items-center gap-8 whitespace-nowrap">
+          {items.map((name, i) => (
+            <span key={i} className="flex items-center gap-4 text-sm font-medium text-muted">
+              <span className="text-accent">{"\u2666"}</span>
+              {name}
+            </span>
+          ))}
+          {items.map((name, i) => (
+            <span key={`dup-${i}`} className="flex items-center gap-4 text-sm font-medium text-muted">
+              <span className="text-accent">{"\u2666"}</span>
+              {name}
             </span>
           ))}
         </div>
-      </section>
+      </div>
+    </FadeUp>
+  );
+}
 
-      {/* Work */}
-      <section id="work" className="mx-auto max-w-6xl px-4 py-14">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-3xl md:text-4xl font-[800] tracking-tight">Selected Work</h2>
-          <span className="inline-flex items-center gap-2 text-sm"><Sparkles className="h-4 w-4"/> shipped + in progress</span>
+/* ─────────────── PROJECT CARD ─────────────── */
+
+function ProjectCard({
+  project,
+  index,
+}: {
+  project: (typeof PROJECTS)[0];
+  index: number;
+}) {
+  return (
+    <FadeUp delay={index * 0.1}>
+      <div className="group relative rounded-2xl border border-border bg-background p-8 transition-all duration-350 ease-out hover:border-transparent hover:bg-dark-card">
+        <div className="flex items-start justify-between">
+          <div>
+            <h3 className="text-xl font-bold leading-snug tracking-tight transition-colors duration-350 group-hover:text-accent">
+              {project.title}
+            </h3>
+            <p className="mt-1 text-sm text-muted transition-colors duration-350 group-hover:text-background/60">
+              {project.org} &middot; {project.year}
+            </p>
+          </div>
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border transition-all duration-350 group-hover:border-accent group-hover:bg-accent/10">
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-350 group-hover:rotate-45 group-hover:text-accent" />
+          </div>
+        </div>
+        <div className="mt-6 flex flex-wrap gap-2">
+          {project.skills.map((s) => (
+            <span
+              key={s}
+              className="rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors duration-350 group-hover:border-background/20 group-hover:text-background/80"
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+      </div>
+    </FadeUp>
+  );
+}
+
+/* ─────────────── SELECTED WORK ─────────────── */
+
+function SelectedWork() {
+  return (
+    <section id="work" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+      <FadeUp>
+        <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
+          Selected Work
+        </h2>
+      </FadeUp>
+      <div className="mt-12 grid gap-6 md:grid-cols-2">
+        {PROJECTS.map((p, i) => (
+          <ProjectCard key={p.title} project={p} index={i} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────── PLAY / EXPERIMENTS ─────────────── */
+
+function Experiments() {
+  return (
+    <section id="play" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+      <FadeUp>
+        <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
+          Experiments
+        </h2>
+      </FadeUp>
+      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {[1, 2, 3].map((n) => (
+          <FadeUp key={n} delay={n * 0.1}>
+            <motion.div
+              whileHover={{
+                rotate: [0, -1, 1, -0.5, 0],
+                transition: { duration: 0.5, type: "spring" },
+              }}
+              className="flex aspect-[4/3] items-center justify-center rounded-2xl border-2 border-dashed border-border"
+            >
+              <span className="text-sm font-medium text-muted">
+                {"Coming soon \u2726"}
+              </span>
+            </motion.div>
+          </FadeUp>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────── INFO / ABOUT ─────────────── */
+
+function Info() {
+  return (
+    <section id="info" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+      <div className="grid gap-12 lg:grid-cols-5">
+        {/* Bio - 3 columns */}
+        <div className="lg:col-span-3">
+          <FadeUp>
+            <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
+              About
+            </h2>
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <p className="mt-6 text-lg leading-relaxed text-muted">
+              Graduate of Stony Brook University (Technological Systems
+              Management, CS + Applied Math & Stats). I enjoy fast iterations,
+              clean interfaces, and the boring-but-essential parts of
+              engineering.
+            </p>
+          </FadeUp>
+
+          <FadeUp delay={0.2}>
+            <div className="mt-10 space-y-4">
+              {SKILLS_DATA.map((item) => (
+                <div
+                  key={item.label}
+                  className="flex flex-col gap-1 border-b border-border pb-4 sm:flex-row sm:gap-6"
+                >
+                  <span className="w-28 shrink-0 text-sm font-bold uppercase tracking-wider">
+                    {item.label}
+                  </span>
+                  <span className="text-sm leading-relaxed text-muted">
+                    {item.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </FadeUp>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {PROJECTS.map((p, idx) => (
-            <Card key={idx} className="rounded-2xl border-black/10 hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle className="text-xl leading-tight">
-                  {p.title}
-                </CardTitle>
-                <div className="mt-1 text-sm text-black/70">{p.org} · {p.year}</div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-[15px] leading-6">{p.blurb}</p>
-                <div className="flex flex-wrap gap-2">
-                  {p.skills.map((s) => (
-                    <span key={s} className="text-xs rounded-full border border-black/20 px-2 py-1">{s}</span>
-                  ))}
-                </div>
-                <div className="flex gap-3 pt-1">
-                  {p.links.map((l) => (
-                    <a key={l.label} href={l.href} className="text-sm inline-flex items-center gap-1 underline underline-offset-4">
-                      {l.label} <ExternalLink className="h-3.5 w-3.5"/>
+        {/* Sidebar - 2 columns */}
+        <div className="flex flex-col gap-6 lg:col-span-2">
+          <FadeUp delay={0.3}>
+            <div className="rounded-2xl border border-border bg-background/60 p-6 backdrop-blur-sm">
+              <h3 className="text-sm font-bold uppercase tracking-wider">
+                Currently
+              </h3>
+              <ul className="mt-4 space-y-3">
+                {[
+                  "Summer intern at Fluor (Supply Chain & Strategy)",
+                  "Practicing deeper coding (beyond LeetCode)",
+                  "Exploring ML + product systems projects",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-muted">
+                    <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.4}>
+            <div className="rounded-2xl border border-border bg-background/60 p-6 backdrop-blur-sm">
+              <h3 className="text-sm font-bold uppercase tracking-wider">
+                Looking for
+              </h3>
+              <ul className="mt-4 space-y-3">
+                {[
+                  "Full-time roles in NYC",
+                  "Mentors in ML/product design",
+                  "Collaborators on interesting projects",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-muted">
+                    <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </FadeUp>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────── FOOTER ─────────────── */
+
+function Footer() {
+  return (
+    <footer className="bg-dark text-background">
+      <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+        <FadeUp>
+          <h2 className="text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[1.05] tracking-tight text-balance">
+            {"Let\u2019s build something"}
+            <br />
+            <span className="text-accent">worth remembering.</span>
+          </h2>
+        </FadeUp>
+
+        <FadeUp delay={0.15}>
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href={LINKS.email}
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition-transform duration-200 hover:scale-105"
+            >
+              <Mail className="h-4 w-4" /> Get in touch
+            </a>
+            <a
+              href={LINKS.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-background/20 px-5 py-3 text-sm font-medium text-background/80 transition-colors hover:border-background/40 hover:text-background"
+            >
+              <Github className="h-4 w-4" /> GitHub
+            </a>
+            <a
+              href={LINKS.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-background/20 px-5 py-3 text-sm font-medium text-background/80 transition-colors hover:border-background/40 hover:text-background"
+            >
+              <Linkedin className="h-4 w-4" /> LinkedIn
+            </a>
+          </div>
+        </FadeUp>
+
+        <FadeUp delay={0.25}>
+          <div className="mt-20 grid gap-10 border-t border-background/10 pt-12 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
+                Location
+              </h4>
+              <p className="mt-3 text-sm text-background/70">
+                New York City
+                <br />
+                Often in Houston
+              </p>
+            </div>
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
+                Explore
+              </h4>
+              <ul className="mt-3 space-y-2 text-sm">
+                {["Work", "Play", "Info"].map((link) => (
+                  <li key={link}>
+                    <a
+                      href={`#${link.toLowerCase()}`}
+                      className="text-background/70 transition-colors hover:text-background"
+                    >
+                      {link}
                     </a>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Play / Experiments */}
-      <section id="play" className="mx-auto max-w-6xl px-4 py-14 border-y border-black/10">
-        <div className="mb-8">
-          <h2 className="text-3xl md:text-4xl font-[800] tracking-tight">Play</h2>
-          <p className="mt-2 text-[15px] max-w-2xl">
-            Little prototypes, visual riffs, and throwaway ideas that sometimes grow up into real projects.
-            Reach out if something sparks.
-          </p>
-        </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1,2,3,4,5,6].map((n) => (
-            <div key={n} className="aspect-[4/3] rounded-2xl border border-black/10 bg-white/50 grid place-items-center text-sm">
-              <span className="opacity-60">Drop an experiment here</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Info / About */}
-      <section id="info" className="mx-auto max-w-6xl px-4 py-14">
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="md:col-span-2 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-[800] tracking-tight">Info</h2>
-            <p className="text-[15px] leading-6">
-              I’m a senior at Stony Brook (Technological Systems Mgmt, CS + Applied Stats minor) who likes
-              turning messy problems into clear products. I enjoy fast iterations, clean interfaces,
-              and the boring-but-essential parts of engineering: naming, docs, and tests.
-            </p>
-            <ul className="text-[15px] leading-7 list-disc pl-5">
-              <li>Languages: Python, Java, R, SQL, TypeScript/JS, HTML/CSS</li>
-              <li>Frameworks: Spring Boot, React, RESTful APIs; some Angular</li>
-              <li>Data: ETL/pipelines, databases, viz; Git, VS Code, Bash/Zsh</li>
-            </ul>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Button asChild variant="outline" className="rounded-2xl">
-                <a href={LINKS.email}><Mail className="h-4 w-4 mr-2"/>Email me</a>
-              </Button>
-              <Button asChild variant="outline" className="rounded-2xl">
-                <a href={LINKS.github}><Github className="h-4 w-4 mr-2"/>GitHub</a>
-              </Button>
-              <Button asChild variant="outline" className="rounded-2xl">
-                <a href={LINKS.linkedin}><Linkedin className="h-4 w-4 mr-2"/>LinkedIn</a>
-              </Button>
-            </div>
-          </div>
-          <aside className="space-y-4">
-            <div className="rounded-2xl border border-black/10 p-4 bg-white/40">
-              <h3 className="font-semibold mb-2">Currently</h3>
-              <ul className="text-sm leading-6 list-disc pl-5">
-                <li>Summer intern at Fluor (Supply Chain & Strategy)</li>
-                <li>Practicing deeper coding (beyond LeetCode)</li>
-                <li>Exploring ML + product systems projects</li>
+                  </li>
+                ))}
               </ul>
             </div>
-            <div className="rounded-2xl border border-black/10 p-4 bg-white/40">
-              <h3 className="font-semibold mb-2">Looking for</h3>
-              <ul className="text-sm leading-6 list-disc pl-5">
-                <li>Fall collaborations (NYC)</li>
-                <li>Mentors in ML/product design</li>
-                <li>Opportunities post‑grad (Jan ‘26)</li>
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
+                Education
+              </h4>
+              <p className="mt-3 text-sm text-background/70">
+                BS, Technological Systems Management
+                <br />
+                CS + Applied Math & Stats
+                <br />
+                Stony Brook University
+              </p>
+            </div>
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-background/40">
+                Contact
+              </h4>
+              <ul className="mt-3 space-y-2 text-sm">
+                <li>
+                  <a
+                    href={LINKS.email}
+                    className="text-background/70 transition-colors hover:text-background"
+                  >
+                    vaishvijariwala03@gmail.com
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={LINKS.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-background/70 transition-colors hover:text-background"
+                  >
+                    LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={LINKS.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-background/70 transition-colors hover:text-background"
+                  >
+                    GitHub
+                  </a>
+                </li>
               </ul>
             </div>
-          </aside>
-        </div>
-      </section>
-
-      {/* Big friendly footer */}
-      <footer className="mt-6 border-t border-black/10 bg-[#fff6bf] text-black">
-        <div className="mx-auto max-w-6xl px-4 py-16">
-          <div className="text-center">
-            <div className="text-[clamp(2rem,8vw,4.2rem)] font-extrabold leading-[1.05] tracking-tight">
-              Thank you for your curiosity.
-            </div>
-            <p className="mt-3 text-[15px] opacity-80 max-w-2xl mx-auto">
-              If something here resonated, say hi. I love talking about thoughtful software,
-              calm interfaces, and building with intention.
-            </p>
-            <div className="mt-6 flex justify-center gap-3 flex-wrap">
-              <Button asChild className="rounded-2xl"><a href={LINKS.email}><Mail className="h-4 w-4 mr-2"/>Let’s chat</a></Button>
-              <Button asChild variant="outline" className="rounded-2xl"><a href={LINKS.github}><Github className="h-4 w-4 mr-2"/>GitHub</a></Button>
-              <Button asChild variant="outline" className="rounded-2xl"><a href={LINKS.linkedin}><Linkedin className="h-4 w-4 mr-2"/>LinkedIn</a></Button>
-            </div>
-
-            <div className="mt-12 grid md:grid-cols-4 gap-8 text-left">
-              <div>
-                <div className="font-semibold mb-2">Visit</div>
-                <div className="text-sm text-black/80">NYC · often in Houston</div>
-              </div>
-              <div>
-                <div className="font-semibold mb-2">Explore</div>
-                <ul className="text-sm space-y-1">
-                  <li><a className="underline underline-offset-4 decoration-2 hover:opacity-75" href="#work">Work</a></li>
-                  <li><a className="underline underline-offset-4 decoration-2 hover:opacity-75" href="#play">Play</a></li>
-                  <li><a className="underline underline-offset-4 decoration-2 hover:opacity-75" href="#info">Info</a></li>
-                </ul>
-              </div>
-              <div>
-                <div className="font-semibold mb-2">Learn</div>
-                <ul className="text-sm space-y-1">
-                  <li>BS, Tech Systems Mgmt + CS & Applied Maths + Stats)</li>
-                  <li>Stony Brook University</li>
-                </ul>
-              </div>
-              <div>
-                <div className="font-semibold mb-2">Let’s talk</div>
-                <ul className="text-sm space-y-1">
-                  <li><a className="underline underline-offset-4 decoration-2 hover:opacity-75" href={LINKS.email}>vaishvijariwala03@gmail.com</a></li>
-                  <li><a className="underline underline-offset-4 decoration-2 hover:opacity-75" href={LINKS.linkedin}>LinkedIn</a></li>
-                  <li><a className="underline underline-offset-4 decoration-2 hover:opacity-75" href={LINKS.github}>GitHub</a></li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-10 text-xs text-black/60">© {new Date().getFullYear()} Vaishvi Jariwala</div>
           </div>
+        </FadeUp>
+
+        <div className="mt-12 text-xs text-background/30">
+          &copy; {new Date().getFullYear()} Vaishvi Jariwala
         </div>
-      </footer>
-    </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ─────────────── PAGE ─────────────── */
+
+export default function Portfolio() {
+  return (
+    <>
+      <CustomCursor />
+      <Nav />
+      <main>
+        <Hero />
+        <Ticker />
+        <SelectedWork />
+        <Experiments />
+        <Info />
+      </main>
+      <Footer />
+    </>
   );
 }
