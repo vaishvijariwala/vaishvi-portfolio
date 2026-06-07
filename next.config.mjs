@@ -20,8 +20,11 @@ const nextConfig = {
     : {}),
 
   images: {
-    // Required for static export — disables the Next.js image optimisation API
-    unoptimized: true,
+    // Custom loader adds the basePath prefix to every image src.
+    // Required because Next.js 15 with output:"export" does NOT automatically
+    // prepend basePath to <Image> src values when using unoptimized:true.
+    loader: "custom",
+    loaderFile: "./image-loader.js",
   },
 };
 
