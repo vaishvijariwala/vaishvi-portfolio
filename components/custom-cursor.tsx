@@ -22,7 +22,6 @@ export function CustomCursor() {
     };
 
     const handleMouseOut = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
       const relatedTarget = e.relatedTarget as HTMLElement | null;
       if (!relatedTarget?.closest("[data-cursor-label]")) {
         setLabel(null);
